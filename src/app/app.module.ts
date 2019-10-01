@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -8,6 +8,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+
+import {Camera} from '@ionic-native/camera/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +22,10 @@ import { AppRoutingModule } from './app-routing.module';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    Camera,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    
+    //{provide: ErrorHandler}// useClass: IonicErrorHandler}
   ],
   bootstrap: [AppComponent]
 })

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ListPage } from './list.page';
+import { ContactsPage } from './contacts.page';
 
 describe('ListPage', () => {
-  let component: ListPage;
-  let fixture: ComponentFixture<ListPage>;
+  let component: ContactsPage;
+  let fixture: ComponentFixture<ContactsPage>;
   let listPage: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListPage ],
+      declarations: [ ContactsPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ListPage);
+    fixture = TestBed.createComponent(ContactsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
@@ -25,7 +25,7 @@ describe('ListPage', () => {
 
   it('should have a list of 10 elements', () => {
     listPage = fixture.nativeElement;
-    const items = listPage.querySelectorAll('ion-item');
+    const items = ContactsPage.querySelectorAll('ion-item');
     expect(items.length).toEqual(10);
   });
 

@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+      <ion-title>
+        Camera
+      </ion-title>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button href="/home" color="primary">
+        <ion-icon slot="icon-only" name="grid"></ion-icon> <!--- Rxminders Logo HERE --->
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <img [src]="currentImage" *ngIf="currentImage">
+  
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+      <ion-fab-button color="dark" (click)="takePicture()">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+  </ion-fab>
+  </ion-content>
