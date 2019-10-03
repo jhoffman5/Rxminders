@@ -8,7 +8,7 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button href="/home" color="primary">
+      <ion-button [routerLink]="['/', 'home']" color="primary">
         <ion-icon slot="icon-only" name="grid"></ion-icon> <!--- Rxminders Logo HERE --->
       </ion-button>
     </ion-buttons>
@@ -29,7 +29,7 @@
       <ion-list-header>
         <ion-label>Resources</ion-label>
       </ion-list-header>
-      <ion-item href="/camera">
+      <ion-item [routerLink]="['/', 'camera']">
         <ion-icon slot="start" color="primary" name="add"></ion-icon>
         <ion-label>Add Prescription</ion-label>
       </ion-item>

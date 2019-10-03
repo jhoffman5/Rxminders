@@ -102,5 +102,5 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
         <string>Used to take pictures</string>
     </edit-config>
-    <allow-navigation href="http://localhost:8100" sessionid="f1418776" />
+    <allow-navigation href="http://localhost:8100" sessionid="24afd447" />
 </widget>
