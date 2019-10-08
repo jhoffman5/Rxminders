@@ -22,9 +22,9 @@ export class AppComponent {
       icon: 'person'
     },
     {
-      title:'Camera',
+      title:'Add Prescription',
       url: '/camera',
-      icon: 'camera'
+      icon: 'add'
     }
   ];
 
