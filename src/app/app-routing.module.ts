@@ -15,7 +15,11 @@ const routes: Routes = [
     path: 'contacts',
     loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsPageModule)
   },
-  { path: 'camera', loadChildren: './camera/camera.module#CameraPageModule' }
+  { path: 'camera', loadChildren: './camera/camera.module#CameraPageModule' },
+  { 
+    path: 'manual',
+    loadChildren: () => import('./manual-input/manual-input.module').then(m => m.ManualInputPageModule)
+  }
 ];
 
 @NgModule({

@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+//import { NavController } from 'ionic-angular';
+//import { map } from 'rxjs/operators';
+
+//import {Component, ViewChild} from '@angular/core';
+//import {Nav, Platform} from 'ionic-angular';
 
 @Component({
   selector: 'app-camera',
@@ -11,7 +16,9 @@ export class CameraPage implements OnInit {
 
   currentImage: any;
 
-  constructor(private camera: Camera) { }
+  constructor(private camera: Camera) { 
+    
+  }
 
   ngOnInit() {
   }
@@ -31,5 +38,4 @@ export class CameraPage implements OnInit {
       console.log("Camera issue:" + err);
     });
   }
-
 }

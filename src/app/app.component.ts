@@ -25,6 +25,11 @@ export class AppComponent {
       title:'Add Prescription',
       url: '/camera',
       icon: 'add'
+    },
+    {
+      title:'Manual Input',
+      url:'/manual',
+      icon: 'create'
     }
   ];
 

@@ -11,6 +11,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import {Camera} from '@ionic-native/camera/ngx';
 
+//import { HttpClient } from '@angular/common/http';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -24,8 +26,6 @@ import {Camera} from '@ionic-native/camera/ngx';
     SplashScreen,
     Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    
-    //{provide: ErrorHandler}// useClass: IonicErrorHandler}
   ],
   bootstrap: [AppComponent]
 })
