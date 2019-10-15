@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-//import { NavController } from 'ionic-angular';
-//import { map } from 'rxjs/operators';
-
-//import {Component, ViewChild} from '@angular/core';
-//import {Nav, Platform} from 'ionic-angular';
 
 @Component({
   selector: 'app-camera',

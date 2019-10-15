@@ -1,19 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-
-//import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-manual-input',
   templateUrl: './manual-input.page.html',
-  styleUrls: ['./manual-input.page.scss'],
+  styleUrls: ['./manual-input.page.scss']
 })
 export class ManualInputPage implements OnInit {
+  //preform: FormGroup;
 
-  constructor(){}//private httpClient: HttpClient) { }
+  formData = {}
+
+  constructor(){}
 
   ngOnInit() {
   }
 
+  logForm(){
+    console.log(this.formData);
+    //this.http.post('localhost:43210', JSON.stringify(this.formData));
+  }
 /*
   addPrescription(){
 
