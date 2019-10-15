@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+//import { Http, Headers, RequestOptions } from '@angular/http';
+import { HTTP } from '@ionic-native/http/ngx';
+//import { HttpModule } from '@angular/http';
 
 @Component({
   selector: 'app-manual-input',
@@ -7,16 +10,20 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class ManualInputPage implements OnInit {
   //preform: FormGroup;
-
+  //http = new HttpClient('http//:localhost:43210/addPrescription');
   formData = {}
-
-  constructor(){}
+  //http = new Http('http://127.0.0.1:43210/addPrescription',RequestOptions);
+  constructor(public http: HTTP){
+  }
 
   ngOnInit() {
   }
 
   logForm(){
     console.log(this.formData);
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.http.post("http://127.0.0.1:43210/addPrescription",this.formData,headers);
     //this.http.post('localhost:43210', JSON.stringify(this.formData));
   }
 /*

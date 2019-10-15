@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'camera', loadChildren: './camera/camera.module#CameraPageModule' },
   { 
     path: 'manual',
-    loadChildren: () => import('./manual-input/manual-input.module').then(m => m.ManualInputPageModule)
+    loadChildren: './manual-input/manual-input.module#ManualInputPageModule'
   }
 ];
 
