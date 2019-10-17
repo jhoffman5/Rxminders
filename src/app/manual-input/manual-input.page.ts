@@ -11,7 +11,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 export class ManualInputPage implements OnInit {
   //preform: FormGroup;
   //http = new HttpClient('http//:localhost:43210/addPrescription');
-  formData = {}
+  formData = {  }
   //http = new Http('http://127.0.0.1:43210/addPrescription',RequestOptions);
   constructor(private http: HTTP){
   }
@@ -20,10 +20,11 @@ export class ManualInputPage implements OnInit {
   }
 
   logForm(){
+
     console.log(this.formData);
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post("http://127.0.0.1:43210/addPrescription",JSON.stringify(this.formData),{headers: headers})
+    this.http.post("http://localhost:43210/addPrescription",JSON.stringify(this.formData),{headers: headers})
       .then(data => {
         console.log(data.status);
         console.log(data.data);
@@ -33,7 +34,7 @@ export class ManualInputPage implements OnInit {
         console.log(error.status);
         console.log(error.data);
         console.log(error.headers);
-      })
+      });
   }
 /*
   addPrescription(){
