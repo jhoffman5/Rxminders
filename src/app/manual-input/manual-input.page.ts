@@ -13,7 +13,7 @@ export class ManualInputPage implements OnInit {
   //http = new HttpClient('http//:localhost:43210/addPrescription');
   formData = {}
   //http = new Http('http://127.0.0.1:43210/addPrescription',RequestOptions);
-  constructor(public http: HTTP){
+  constructor(private http: HTTP){
   }
 
   ngOnInit() {
@@ -23,8 +23,17 @@ export class ManualInputPage implements OnInit {
     console.log(this.formData);
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post("http://127.0.0.1:43210/addPrescription",this.formData,headers);
-    //this.http.post('localhost:43210', JSON.stringify(this.formData));
+    this.http.post("http://127.0.0.1:43210/addPrescription",JSON.stringify(this.formData),{headers: headers})
+      .then(data => {
+        console.log(data.status);
+        console.log(data.data);
+        console.log(data.headers);
+      })
+      .catch(error => {
+        console.log(error.status);
+        console.log(error.data);
+        console.log(error.headers);
+      })
   }
 /*
   addPrescription(){
