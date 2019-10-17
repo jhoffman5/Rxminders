@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 //import { Http, Headers, RequestOptions } from '@angular/http';
-import { HTTP } from '@ionic-native/http/ngx';
+//import { HTTP } from '@ionic-native/http/ngx';
 //import { HttpModule } from '@angular/http';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 
 @Component({
   selector: 'app-manual-input',
@@ -11,30 +12,57 @@ import { HTTP } from '@ionic-native/http/ngx';
 export class ManualInputPage implements OnInit {
   //preform: FormGroup;
   //http = new HttpClient('http//:localhost:43210/addPrescription');
-  formData = {  }
+  formData = {  };
+
+  databaseObj: SQLiteObject; // Database instance object
+  name_model:string = ""; // Input field model
+  row_data: any = []; // Table rows
+  readonly database_name:string = "Rxminders.db"; // DB name
+  readonly table_name:string = "Prescriptions"; // Table name
+ 
+
   //http = new Http('http://127.0.0.1:43210/addPrescription',RequestOptions);
-  constructor(private http: HTTP){
+  constructor(private sqlite: SQLite){
+
   }
 
   ngOnInit() {
   }
 
+  createDB(){
+    this.sqlite.create({
+      name:this.database_name,
+      location: 'default'
+    })
+    .then((db: SQLiteObject) => {
+      this.databaseObj = db;
+      alert('Database Created');
+    })
+    .catch(e => {
+      alert("error "+JSON.stringify(e))
+    });
+  }
+
+  createTable(){
+    this.databaseObj.executeSql('CREATE TABLE IF NOT EXISTS ' + this.table_name + 'pid INTEGER PRIMARY KEY, Name text, Time text', [])
+    .then(()=>{
+      alert('Table Created');
+    })
+    .catch(e => {
+      alert("error " + JSON.stringify(e))
+    });
+  }
+
   logForm(){
 
     console.log(this.formData);
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    this.http.post("http://localhost:43210/addPrescription",JSON.stringify(this.formData),{headers: headers})
-      .then(data => {
-        console.log(data.status);
-        console.log(data.data);
-        console.log(data.headers);
-      })
-      .catch(error => {
-        console.log(error.status);
-        console.log(error.data);
-        console.log(error.headers);
-      });
+    this.databaseObj.executeSql('INSERT INTO ' + this.table_name + ' VALUES ("' + 1 + "','" + 1 +'")"',[])//+ this.formData.preName + '","' + this.formData.time + '"', [])
+    .then(()=>{
+      alert('Row Inserted');
+    })
+    .catch(e=>{
+      alert("error " + JSON.stringify(e))
+    });
   }
 /*
   addPrescription(){
