@@ -10,8 +10,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { Camera } from '@ionic-native/camera/ngx';
-import { HTTP } from '@ionic-native/http/ngx';
-//import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +23,6 @@ import { HTTP } from '@ionic-native/http/ngx';
     StatusBar,
     SplashScreen,
     Camera,
-    HTTP,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]

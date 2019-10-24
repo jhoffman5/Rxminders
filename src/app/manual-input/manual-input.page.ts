@@ -20,21 +20,7 @@ export class ManualInputPage implements OnInit {
   }
 
   logForm(){
-
     console.log(this.formData);
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    this.http.post("http://localhost:43210/addPrescription",JSON.stringify(this.formData),{headers: headers})
-      .then(data => {
-        console.log(data.status);
-        console.log(data.data);
-        console.log(data.headers);
-      })
-      .catch(error => {
-        console.log(error.status);
-        console.log(error.data);
-        console.log(error.headers);
-      });
   }
 /*
   addPrescription(){
