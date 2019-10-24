@@ -36,13 +36,13 @@
       <ion-col>
         <ion-card *ngFor="let prescription of prescriptions;">
           <ion-card-header>
-            <ion-card-title>{{ prescription }}</ion-card-title>
-            <ion-card-subtitle>Time Taken Each Day</ion-card-subtitle>
+            <ion-card-title>{{ prescription.preName }}</ion-card-title>
+            <ion-card-subtitle>Time Taken Each Day: {{ prescription.reminderTime }}</ion-card-subtitle>
           </ion-card-header>
           <hr color="primary">
           <ion-card-content>
             <p>
-              #/# left
+              {{ prescription.quantity }} left
             </p>
           </ion-card-content>
         </ion-card>
