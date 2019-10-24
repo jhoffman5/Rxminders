@@ -27,6 +27,10 @@
       <ion-label>Enter Reminder Time:</ion-label>
       <ion-input type="time" name="reminderTime" [(ngModel)]="formData.reminderTime"></ion-input>
     </ion-item>
+    <ion-item>
+      <ion-label>Enter Quantity:</ion-label>
+      <ion-input type="number" name="quantity" [(ngModel)]="formData.quantity" placeholder=" Quantity"></ion-input>
+    </ion-item>
     <ion-button type="submit" block>Submit</ion-button>
   </form>
 </ion-content>

@@ -8,7 +8,7 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./manual-input.page.scss']
 })
 export class ManualInputPage implements OnInit {
-  formData = {preName:"", reminderTime:""}
+  formData = {preName:"", reminderTime:"", quantity: null}
   
   constructor(private storage: Storage){
   }
