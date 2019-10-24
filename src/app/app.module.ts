@@ -10,9 +10,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { Camera } from '@ionic-native/camera/ngx';
-//import { HTTP } from '@ionic-native/http/ngx';
-import { SQLite } from '@ionic-native/sqlite/ngx';
-//import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +23,6 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
     StatusBar,
     SplashScreen,
     Camera,
-    SQLite,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]
