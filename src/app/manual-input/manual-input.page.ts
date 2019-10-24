@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-//import { Http, Headers, RequestOptions } from '@angular/http';
-import { HTTP } from '@ionic-native/http/ngx';
-//import { HttpModule } from '@angular/http';
+
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-manual-input',
@@ -9,11 +8,9 @@ import { HTTP } from '@ionic-native/http/ngx';
   styleUrls: ['./manual-input.page.scss']
 })
 export class ManualInputPage implements OnInit {
-  //preform: FormGroup;
-  //http = new HttpClient('http//:localhost:43210/addPrescription');
-  formData = {  }
-  //http = new Http('http://127.0.0.1:43210/addPrescription',RequestOptions);
-  constructor(private http: HTTP){
+  formData = {preName:"", reminderTime:""}
+  
+  constructor(private storage: Storage){
   }
 
   ngOnInit() {
@@ -21,6 +18,13 @@ export class ManualInputPage implements OnInit {
 
   logForm(){
     console.log(this.formData);
+    let formStuff = this.formData;
+
+    this.storage.set(formStuff.preName,this.formData);
+
+    this.storage.get(formStuff.preName).then((val)=>{
+      console.log('Your next reminder is at', val.reminderTime);
+    })
   }
 /*
   addPrescription(){
