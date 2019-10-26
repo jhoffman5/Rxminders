@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { Storage } from '@ionic/storage';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-manual-input',
   templateUrl: './manual-input.page.html',
@@ -10,7 +12,7 @@ import { Storage } from '@ionic/storage';
 export class ManualInputPage implements OnInit {
   formData = {preName:"", reminderTime:"", quantity: null}
   
-  constructor(private storage: Storage){
+  constructor(private storage: Storage, private router:Router){
   }
 
   ngOnInit() {
@@ -26,6 +28,10 @@ export class ManualInputPage implements OnInit {
       console.log('Your next reminder is at', val.reminderTime);
     })
     .catch((e)=>console.log(e))
+
+    alert("Prescription Added!");
+
+    this.router.navigateByUrl('/home');
   }
 /*
   addPrescription(){
