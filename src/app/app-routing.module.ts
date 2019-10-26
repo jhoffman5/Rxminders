@@ -20,7 +20,10 @@ const routes: Routes = [
     path: 'manual',
     loadChildren: './manual-input/manual-input.module#ManualInputPageModule'
   },
-  { path: 'choose-input', loadChildren: './choose-input/choose-input.module#ChooseInputPageModule' }
+  { 
+    path: 'choose-input', 
+    loadChildren: './choose-input/choose-input.module#ChooseInputPageModule' 
+  }
 ];
 
 @NgModule({
