@@ -23,13 +23,8 @@ export class AppComponent {
     },
     {
       title:'Add Prescription',
-      url: '/camera',
+      url: '/choose-input',
       icon: 'add'
-    },
-    {
-      title:'Manual Input',
-      url:'/manual',
-      icon: 'create'
     }
   ];
 

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button color="primary"></ion-menu-button>
       <ion-title>
-        Add Prescription
+        Take a Picture
       </ion-title>
     </ion-buttons>
 
@@ -27,15 +27,8 @@
     <ion-row class="ion-no-margin ion-no-padding">
       <ion-col class="ion-no-padding">
         <ion-buttons>
-          <ion-button color="light" style="margin:auto; width: 90%;" [routerLink]="['/', 'manual']">
-            <ion-icon name="create" color="primary"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-col>
-      <ion-col class="ion-no-padding">
-        <ion-buttons>
-          <ion-button color="light" (click)="takePicture()" style="margin:auto; width: 90%;">
-            <ion-icon name="camera" color="primary"></ion-icon>
+          <ion-button class="inputButton" color="dark" (click)="takePicture()">
+            <ion-icon color="primary" name="camera" size="large"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-col>

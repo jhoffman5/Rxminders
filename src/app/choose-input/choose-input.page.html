@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+      <ion-title>
+        Choose Input
+      </ion-title>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/', 'home']" color="primary">
+        <ion-icon slot="icon-only" name="grid"></ion-icon> <!--- Rxminders Logo HERE --->
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-button class="inputButton" color="dark" [routerLink]="['/', 'manual']">
+    <ion-icon color="primary" name="create" size="large"></ion-icon>
+  </ion-button>
+
+  <ion-button class="inputButton" color="dark" [routerLink]="['/', 'camera']">
+    <ion-icon color="primary" name="camera" size="large"></ion-icon>
+  </ion-button>
+
+<!---
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-no-padding">
+        <ion-buttons>
+          <ion-button style="margin:auto; width: 90%;" [routerLink]="['/', 'manual']">
+            <ion-icon name="create" color="primary"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-no-padding">
+        <ion-buttons>
+          <ion-button color="light" style="margin:auto; width: 90%;" [routerLink]="['/', 'camera']">
+            <ion-icon name="camera" color="primary"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  --->
+</ion-content>
+
+<ion-footer style="background-color: #222428;">
+
+</ion-footer>

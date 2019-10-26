@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button color="primary"></ion-menu-button>
       <ion-title>
-        Manual Input
+        Enter Prescription Data
       </ion-title>
     </ion-buttons>
 
@@ -14,8 +14,6 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-
 
 <ion-content>
   <form (ngSubmit)="logForm()">
@@ -31,6 +29,6 @@
       <ion-label>Enter Quantity:</ion-label>
       <ion-input type="number" name="quantity" [(ngModel)]="formData.quantity" placeholder=" Quantity"></ion-input>
     </ion-item>
-    <ion-button type="submit" block>Submit</ion-button>
+    <button class="submitButton" color="dark" type="submit">SUBMIT</button>
   </form>
 </ion-content>

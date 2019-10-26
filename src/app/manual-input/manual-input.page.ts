@@ -25,6 +25,7 @@ export class ManualInputPage implements OnInit {
     this.storage.get(formStuff.preName).then((val)=>{
       console.log('Your next reminder is at', val.reminderTime);
     })
+    .catch((e)=>console.log(e))
   }
 /*
   addPrescription(){
