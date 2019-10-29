@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { Storage } from '@ionic/storage';
 
+import { ToastController } from '@ionic/angular';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +14,7 @@ import { Router } from '@angular/router';
 export class ManualInputPage implements OnInit {
   formData = {preName:"", reminderTime:"", quantity: null}
   
-  constructor(private storage: Storage, private router:Router){
+  constructor(private storage: Storage, private router:Router, public toastController:ToastController){
   }
 
   ngOnInit() {
@@ -26,12 +28,22 @@ export class ManualInputPage implements OnInit {
 
     this.storage.get(formStuff.preName).then((val)=>{
       console.log('Your next reminder is at', val.reminderTime);
+      this.alertPrescription("Prescription Added");
     })
     .catch((e)=>console.log(e))
 
-    alert("Prescription Added!");
+    //alert("Prescription Added!");
 
     this.router.navigateByUrl('/home');
+  }
+
+  async alertPrescription(text: string)
+  {
+    const toast = await this.toastController.create({
+      message:text,
+      duration: 2000
+    });
+    toast.present();
   }
 /*
   addPrescription(){

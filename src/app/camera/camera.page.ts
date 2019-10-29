@@ -32,7 +32,6 @@ export class CameraPage implements OnInit {
     this.camera.getPicture(options).then((imageData) => {
       this.currentImage = 'data:image/jpeg;base64,' + imageData;
     }, (err) => {
-      // Handle error
       console.log("Camera issue:" + err);
     });
   }

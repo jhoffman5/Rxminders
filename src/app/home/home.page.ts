@@ -32,8 +32,8 @@ export class HomePage {
     );*/
     this.storage.forEach((value:any, key:string, iterationNumber: Number)=>
     {
-      console.log(key);
-      console.log(value);
+      //console.log(key);
+      //console.log(value);
       //console.log(iterationNumber);
 
       this.prescriptions.push(value);
