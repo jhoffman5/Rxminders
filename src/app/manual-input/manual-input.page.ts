@@ -28,20 +28,18 @@ export class ManualInputPage implements OnInit {
 
     this.storage.get(formStuff.preName).then((val)=>{
       console.log('Your next reminder is at', val.reminderTime);
-      this.alertPrescription("Prescription Added");
+      this.alertMessage("Prescription Added");
     })
     .catch((e)=>console.log(e))
-
-    //alert("Prescription Added!");
 
     this.router.navigateByUrl('/home');
   }
 
-  async alertPrescription(text: string)
+  async alertMessage(text: string)
   {
     const toast = await this.toastController.create({
-      message:text,
-      duration: 2000
+      message: text,
+      duration: 3000
     });
     toast.present();
   }
