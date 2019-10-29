@@ -10,6 +10,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 export class CameraPage implements OnInit {
 
   currentImage: any;
+  public words: any;
 
   constructor(private camera: Camera) { 
     
@@ -23,7 +24,9 @@ export class CameraPage implements OnInit {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
+      mediaType: this.camera.MediaType.PICTURE,
+      saveToPhotoAlbum:false,
+      correctOrientation:true
     };
 
     this.camera.getPicture(options).then((imageData) => {
@@ -32,5 +35,9 @@ export class CameraPage implements OnInit {
       // Handle error
       console.log("Camera issue:" + err);
     });
+  }
+
+  recognizeText(){
+    console.log(this.currentImage);
   }
 }
