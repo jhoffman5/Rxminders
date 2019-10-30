@@ -15,29 +15,90 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="!areRxmindersMade()">
+  <ion-card class="welcome-card">
+    <ion-card-header>
+      <ion-card-title>Welcome to Rxminders!</ion-card-title>
+    </ion-card-header>
+    <hr color="primary">
+    <ion-card-content>
+      <p>
+        Rxminders is a prescription management app that allows you to be reminded when you have a prescription and keep track of past medications.
+      </p>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Getting Started
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+              <ion-button style="width: 100%;" color="dark" [routerLink]="['/', 'manual']">
+                <ion-icon color="primary" name="create" size="large"></ion-icon>
+              </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button style="width: 100%;" color="dark" [routerLink]="['/', 'camera']">
+              <ion-icon color="primary" name="camera" size="large"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      
+
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-content *ngIf="areRxmindersMade()">
   <ion-card class="welcome-card">
     <ion-card-header>
       <ion-card-subtitle>USER'S NAME HERE</ion-card-subtitle>
       <ion-card-title>Welcome to Rxminders</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>{{ '{' }}time{{ '}' }} until next Prescription</p>
+        <ion-list class="ion-no-margin ion-no-padding">
+            <ion-row class="ion-no-margin ion-no-padding">
+              <ion-col class="ion-no-margin ion-no-padding">
+                  Next Rxminder at: 
+              </ion-col>
+              <ion-col class="ion-no-margin ion-no-padding">
+                <ion-datetime displayFormat="h:mm A" value= "{{ time }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+              </ion-col>
+            </ion-row>
+          </ion-list>
     </ion-card-content>
   </ion-card>
-  <ion-grid lines="none">
+
+
+  <ion-grid *ngIf="areRxmindersMade()" lines="none">
     <ion-list-header>
       <ion-label>Current Prescriptions</ion-label>
     </ion-list-header>
 
-    <!---<ion-button (click)="allPrescriptions()"></ion-button>
---->
     <ion-row>
       <ion-col>
         <ion-card *ngFor="let prescription of prescriptions;">
           <ion-card-header>
             <ion-card-title>{{ prescription.preName }}</ion-card-title>
-            <ion-card-subtitle>Time Taken Each Day: {{ prescription.reminderTime }}</ion-card-subtitle>
+            <ion-card-subtitle>
+              <ion-list class="ion-no-margin ion-no-padding">
+                <ion-row class="ion-no-margin ion-no-padding">
+                  <ion-col class="ion-no-margin ion-no-padding">
+                      Rxminder Time:
+                  </ion-col>
+                  <ion-col class="ion-no-margin ion-no-padding">
+                    <ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+                  </ion-col>
+                </ion-row>
+              </ion-list>
+            </ion-card-subtitle>
           </ion-card-header>
           <hr color="primary">
           <ion-card-content>

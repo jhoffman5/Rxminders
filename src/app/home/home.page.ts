@@ -8,9 +8,10 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  
-  public prescriptions: any[] = this.allPrescriptions();
 
+  public prescriptions: any[] = this.allPrescriptions();
+  public time: string = Date();
+  public h: string = this.time;
   constructor(private storage: Storage) {
     //this.prescriptions = this.allPrescriptions();
     //console.log(this.prescriptions);
@@ -18,27 +19,24 @@ export class HomePage {
 
   allPrescriptions(){
     let retVal = [];
-    /*
-    this.storage.keys()
-    .then(
-      data=>{
-        retVal = data;
-        
-        this.prescriptions = data;
-        //console.log(data);
-        //return data;
-      },
-      error => console.log(error)
-    );*/
+    
     this.storage.forEach((value:any, key:string, iterationNumber: Number)=>
     {
-      //console.log(key);
-      //console.log(value);
-      //console.log(iterationNumber);
-
       this.prescriptions.push(value);
     });
-    
+
     return retVal;
   }
+
+
+  areRxmindersMade(){
+    if(this.prescriptions.length == 0)
+    {
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
 }
