@@ -14,7 +14,9 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<!-- ^ header ^ -->
 
+<!-- v intro home page v -->
 <ion-content *ngIf="!areRxmindersMade()">
   <ion-card class="welcome-card">
     <ion-card-header>
@@ -37,25 +39,25 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-              <ion-button style="width: 100%;" color="dark" [routerLink]="['/', 'manual']">
+              <ion-button style="width: 100%; height: 100%;" color="dark" [routerLink]="['/', 'manual']">
                 <ion-icon color="primary" name="create" size="large"></ion-icon>
               </ion-button>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-button style="width: 100%;" color="dark" [routerLink]="['/', 'camera']">
+            <ion-button style="width: 100%; height: 100%;" color="dark" [routerLink]="['/', 'camera']">
               <ion-icon color="primary" name="camera" size="large"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
-      
-
       </ion-grid>
     </ion-card-content>
   </ion-card>
 </ion-content>
+<!-- ^ intro home page ^ -->
 
+<!-- v normal home page with prescriptions entered v -->
 <ion-content *ngIf="areRxmindersMade()">
   <ion-card class="welcome-card">
     <ion-card-header>
@@ -125,9 +127,9 @@
     </ion-row>
   </ion-grid>
   <ion-list lines="none">
-    <ion-list-header>
+    <!---<ion-list-header>
       <ion-label>Resources</ion-label>
-    </ion-list-header>
+    </ion-list-header>--->
     <ion-item [routerLink]="['/', 'choose-input']">
       <ion-icon slot="start" color="primary" name="add"></ion-icon>
       <ion-label>Add Prescription</ion-label>

@@ -11,10 +11,11 @@ export class HomePage {
 
   public prescriptions: any[] = this.allPrescriptions();
   public time: string = Date();
-  public h: string = this.time;
+
   constructor(private storage: Storage) {
     //this.prescriptions = this.allPrescriptions();
     //console.log(this.prescriptions);
+    
   }
 
   allPrescriptions(){
@@ -22,7 +23,7 @@ export class HomePage {
     
     this.storage.forEach((value:any, key:string, iterationNumber: Number)=>
     {
-      this.prescriptions.push(value);
+      retVal.push(value);
     });
 
     return retVal;
@@ -38,5 +39,4 @@ export class HomePage {
       return true;
     }
   }
-
 }

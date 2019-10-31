@@ -16,11 +16,11 @@ export class AppComponent {
       url: '/home',
       icon: 'home'
     },
-    {
+    /*{
       title: 'Contacts',
       url: '/contacts',
       icon: 'person'
-    },
+    },*/
     {
       title:'Add Prescription',
       url: '/choose-input',
