@@ -16,6 +16,15 @@
 </ion-header>
 
 <ion-content>
+  <ion-row>
+    <ion-col>
+      <ion-card *ngFor="let word of words;">
+        <ion-card-header>
+          <ion-card-title>{{ word }}</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
 
   <img [src]="currentImage" *ngIf="currentImage" class="centerImg">
 

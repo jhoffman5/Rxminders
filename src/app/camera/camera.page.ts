@@ -33,10 +33,11 @@ export class CameraPage implements OnInit {
     this.camera.getPicture(options).then((imageData) => {
       this.currentImage = 'data:image/jpeg;base64,' + imageData;
 
-      this.ocr.recText(4, /*3,*/ this.currentImage)
+      this.ocr.recText(4, /*3,*/ imageData)
       .then((recognizedText) => {
         console.log(recognizedText);
         alert(recognizedText);
+        this.words = recognizedText.words;
       }, (err) =>{
         alert('Failed because: ' + err);
       })
