@@ -36,20 +36,26 @@ export class CameraPage implements OnInit {
       this.ocr.recText(4, /*3,*/ imageData)
       .then((recognizedText) => {
         console.log(recognizedText);
-        alert(recognizedText);
-        this.words = recognizedText.words;
+        alert(JSON.stringify(recognizedText));
+        //this.words = recognizedText.words.wordtext;
+        this.cleanText(recognizedText.words.wordtext);
       }, (err) =>{
-        alert('Failed because: ' + err);
+        alert('Error recognizing text: ' + err);
       })
     }, (err) => {
+      alert("Camera issue:" + err)
       console.log("Camera issue:" + err);
     });
 
     //this.camera.getPicture(onSuccess, onFail, { quality: 100, correctOrientation: true });
   }
 
-  recognizeText(){
-    console.log(this.currentImage);
-    alert(this.currentImage);
+  cleanText(words: string[]){
+    for(let word in words)
+    {
+      word = word.toLowerCase();
+    }
+
+    this.words = words;
   }
 }

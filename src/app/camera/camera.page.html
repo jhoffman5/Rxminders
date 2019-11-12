@@ -16,17 +16,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-row>
-    <ion-col>
-      <ion-card *ngFor="let word of words;">
-        <ion-card-header>
-          <ion-card-title>{{ word }}</ion-card-title>
-        </ion-card-header>
-      </ion-card>
-    </ion-col>
-  </ion-row>
 
   <img [src]="currentImage" *ngIf="currentImage" class="centerImg">
+
+  <ion-card *ngIf="words">
+    <ion-card-header>
+        <ion-card-title>{{ words }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 
 </ion-content>
 
@@ -37,14 +34,7 @@
       <ion-col class="ion-no-padding">
         <ion-buttons>
           <ion-button class="inputButton" color="dark" (click)="takePicture()">
-            <ion-icon color="primary" name="camera" size="large"></ion-icon>Take Picture
-          </ion-button>
-        </ion-buttons>
-      </ion-col>
-      <ion-col class="ion-no-padding">
-        <ion-buttons>
-          <ion-button class="inputButton" color="dark" (click)="recognizeText()">
-            <ion-icon color="primary" name="camera" size="large"></ion-icon>Recognize Text
+            <ion-icon color="primary" name="camera" size="large"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-col>
