@@ -51,10 +51,21 @@ export class CameraPage implements OnInit {
   }
 
   cleanText(words: string[]){
-    for(let word in words)
+    for(var i = 0; i<words.length; i++)
     {
-      word = word.toLowerCase();
+      words[i] = words[i].toLowerCase();
+      if(words[i]=="daily")
+      {
+        //get the previous 'number' and set 'var timesDaily' to that
+      }
+
+      if(words[i]=="qty"||words[i]=="qty:")
+      {
+        //set 'var qty' to words[i+1]
+      }
     }
+
+
 
     this.words = words;
   }
