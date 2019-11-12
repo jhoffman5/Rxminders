@@ -30,3 +30,7 @@ npm-debug.log*
 /plugins
 /www
 .gradle
+.json
+.properties
+.xml
+.iml
