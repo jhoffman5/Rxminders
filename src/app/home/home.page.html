@@ -16,74 +16,44 @@
 </ion-header>
 <!-- ^ header ^ -->
 
-<!-- v intro home page v -->
-<ion-content *ngIf="!areRxmindersMade()">
-  <ion-card class="welcome-card">
-    <ion-card-header>
-      <ion-card-title>Welcome to Rxminders!</ion-card-title>
-    </ion-card-header>
-    <hr color="primary">
-    <ion-card-content>
-      <p>
-        Rxminders is a prescription management app that allows you to be reminded when you have a prescription and keep track of past medications.
-      </p>
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        Getting Started
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-              <ion-button style="width: 100%; height: 100%;" color="dark" [routerLink]="['/', 'manual']">
-                <ion-icon color="primary" name="create" size="large"></ion-icon>
-              </ion-button>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-button style="width: 100%; height: 100%;" color="dark" [routerLink]="['/', 'camera']">
-              <ion-icon color="primary" name="camera" size="large"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
-</ion-content>
-<!-- ^ intro home page ^ -->
-
 <!-- v normal home page with prescriptions entered v -->
-<ion-content *ngIf="areRxmindersMade()">
+<ion-content>
   <ion-card class="welcome-card">
     <ion-card-header>
-      <ion-card-subtitle>USER'S NAME HERE</ion-card-subtitle>
-      <ion-card-title>Welcome to Rxminders</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
+      <ion-card-title *ngIf="!areRxmindersMade">Welcome to Rxminders!</ion-card-title>
+      <ion-card-title *ngIf="areRxmindersMade">
         <ion-list class="ion-no-margin ion-no-padding">
             <ion-row class="ion-no-margin ion-no-padding">
               <ion-col class="ion-no-margin ion-no-padding">
                   Next Rxminder at: 
               </ion-col>
-              <ion-col class="ion-no-margin ion-no-padding">
+              <ion-col class="ion-no-margin ion-no-padding" color="dark">
                 <ion-datetime displayFormat="h:mm A" value= "{{ time }}" class="ion-no-margin ion-no-padding"></ion-datetime>
               </ion-col>
             </ion-row>
           </ion-list>
-    </ion-card-content>
+      </ion-card-title>
+    </ion-card-header>
+<!---
+    <ion-card-content>
+      <ion-list class="ion-no-margin ion-no-padding">
+          <ion-row class="ion-no-margin ion-no-padding">
+            <ion-col class="ion-no-margin ion-no-padding">
+                Next Rxminder at: 
+            </ion-col>
+            <ion-col class="ion-no-margin ion-no-padding">
+              <ion-datetime displayFormat="h:mm A" value= "{{ time }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+            </ion-col>
+          </ion-row>
+        </ion-list>
+    </ion-card-content> --->
   </ion-card>
 
 
-  <ion-grid *ngIf="areRxmindersMade()" lines="none">
+  <ion-grid *ngIf="areRxmindersMade" lines="none">
     <ion-list-header>
       <ion-label>Current Prescriptions</ion-label>
     </ion-list-header>
-
     <ion-row>
       <ion-col>
         <ion-card *ngFor="let prescription of prescriptions;">
@@ -110,20 +80,41 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
-      <!---<ion-col>
+    </ion-row>
+  </ion-grid>
+  <!--- v intro card v --->
+  <ion-grid *ngIf="!areRxmindersMade">
+    <ion-row>
+      <ion-col>
         <ion-card>
           <ion-card-header>
-            <ion-card-title>Prescription Name</ion-card-title>
-            <ion-card-subtitle>Time Taken Each Day</ion-card-subtitle>
+            <ion-card-title>
+              Getting Started
+            </ion-card-title>
+            <ion-card-subtitle>
+              Rxminders is a prescription management app that allows you to be reminded when you have a prescription and keep track of past medications.
+            </ion-card-subtitle>
           </ion-card-header>
-          <hr color="primary">
           <ion-card-content>
-            <p>
-              #/# left
-            </p>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                    <ion-button style="width: 100%; height: 100%;" color="dark" [routerLink]="['/', 'manual']">
+                      <ion-icon color="primary" name="create" size="large"></ion-icon>
+                    </ion-button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button style="width: 100%; height: 100%;" color="dark" [routerLink]="['/', 'camera']">
+                    <ion-icon color="primary" name="camera" size="large"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-card-content>
         </ion-card>
-      </ion-col>--->
+      </ion-col>
     </ion-row>
   </ion-grid>
   <ion-list lines="none">
