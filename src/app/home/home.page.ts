@@ -9,52 +9,53 @@ import { Storage } from '@ionic/storage';
 })
 export class HomePage {
 
-  public prescriptions: any[];//= this.allPrescriptions();
+  public prescriptions: any[];
   public time: string = Date();
-  public areRxmindersMade: boolean;
-  //public nextRxminder: string = this.getNextRxminder();
+  public areRxmindersMade: boolean = false;
+  public nextRxminder: any;
 
   constructor(private storage: Storage) {
+    this.areRxmindersMade = false;
     this.prescriptions = this.allPrescriptions();
-    this.areRxmindersMade = true;
+    //this.nextRxminder = this.getNextRxminder();
   }
 
   allPrescriptions(){
     let retVal = [];
 
-    this.storage.forEach((value:any, key:string, iterationNumber: Number)=>
-    {
+    this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
       retVal.push(value);
+      this.areRxmindersMade = true;
     });
-
-    if(retVal==[])
-    {
-      this.areRxmindersMade = false;
-    }
 
     return retVal;
-  }
+    /*return new Promise((resolve,reject)=>{
+      let retVal = [];
 
-
- /* getNextRxminder(){
-    let nextRxminder = [];
-    this.storage.forEach((value)=>{
-      if((parseFloat(value.reminderTime) - parseFloat(this.time)) > 0 ){
-        nextRxminder.push(value);
+      this.storage.forEach((value:any, key:string, iterationNumber: Number)=>
+      {
+        retVal.push(value);
+      });
+  
+      if(retVal==[])
+      {
+        this.areRxmindersMade = false;
       }
-    });
-    return nextRxminder[0].reminderTime;
+
+      resolve(retVal);
+    });*/
   }
-  */
-/*
-  areRxmindersMade(){
-    if(this.prescriptions.length == 0)
-    {
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-  */
+
+  /*async getNextRxminder(){
+    //var prescriptions = await Promise.all(this.allPrescriptions());
+
+    var next = new Date().getHours().toString() +":"+ new Date().getMinutes().toString();
+    var currentTime = new Date().getHours().toString() +":"+ new Date().getMinutes().toString();
+    //console.log(prescriptions.length);
+    //this.allPrescriptions().then(prescriptions => console.log(prescriptions[0]));
+    console.log("NEXT: "+next);
+
+    return next;
+  }*/
+
 }
