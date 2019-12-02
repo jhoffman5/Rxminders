@@ -18,6 +18,11 @@ export class HomePage {
     this.areRxmindersMade = false;
     this.prescriptions = this.allPrescriptions();
     //this.nextRxminder = this.getNextRxminder();
+    //this.storage.clear();
+  }
+
+  ionViewWillEnter() {
+    this.prescriptions = this.allPrescriptions();
   }
 
   allPrescriptions(){
