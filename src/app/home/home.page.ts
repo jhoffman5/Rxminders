@@ -51,6 +51,9 @@ export class HomePage {
     });*/
   }
 
+  devErase(){
+    this.storage.clear();
+  }
   /*async getNextRxminder(){
     //var prescriptions = await Promise.all(this.allPrescriptions());
 
