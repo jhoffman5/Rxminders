@@ -75,7 +75,7 @@ export class HomePage {
     var next: string = "36:01"; // not a possible time
     var earliest: string = "36:01";
     var currentTime = new Date().getHours().toString() +":"+ ((new Date().getMinutes().toString().length<2) ? "0" + new Date().getMinutes().toString() : new Date().getMinutes().toString());
-    console.log("CURRENT TIME: "+currentTime);
+    //console.log("CURRENT TIME: "+currentTime);
 
 
     this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
@@ -84,7 +84,7 @@ export class HomePage {
     }).then( res => {
 
       prescriptions.forEach(element => {
-        console.log(element);
+        //console.log(element);
         if(element.reminderTime > currentTime && element.reminderTime < next)
         {
           next = element.reminderTime;
@@ -93,17 +93,15 @@ export class HomePage {
         {
           earliest = element.reminderTime;
         }
-
-        console.log("MAYBE EARLY: "+earliest);
-        console.log("MAYBE NEXT: "+next);
       });
 
-      console.log("EARLY: "+earliest);
+      if(next=="36:01")
+      {
+        next = earliest;
+      }
       console.log("NEXT: "+next);
-
+      this.nextRxminder = next;
     });
-
-
 
     return next;
   }

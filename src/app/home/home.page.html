@@ -24,29 +24,32 @@
       <ion-card-title *ngIf="areRxmindersMade">
         <ion-list class="ion-no-margin ion-no-padding">
             <ion-row class="ion-no-margin ion-no-padding">
-              <ion-col class="ion-no-margin ion-no-padding">
-                  Next Rxminder at: 
-              </ion-col>
-              <ion-col class="ion-no-margin ion-no-padding" color="dark">
+              <!--ion-col class="ion-no-margin ion-no-padding"-->
+                <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding">Next rxminder at </span></pre>
+                <ion-datetime displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+                <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding"> for</span></pre>
+              <!--/ion-col-->
+              <!---<ion-col class="ion-no-margin ion-no-padding" color="dark">
                 <ion-datetime displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
               </ion-col>
+              <ion-col class="ion-no-margin ion-no-padding">
+                  for
+              </ion-col>--->
             </ion-row>
           </ion-list>
       </ion-card-title>
     </ion-card-header>
-<!---
+
     <ion-card-content>
       <ion-list class="ion-no-margin ion-no-padding">
-          <ion-row class="ion-no-margin ion-no-padding">
-            <ion-col class="ion-no-margin ion-no-padding">
-                Next Rxminder at: 
-            </ion-col>
-            <ion-col class="ion-no-margin ion-no-padding">
-              <ion-datetime displayFormat="h:mm A" value= "{{ time }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+          <ion-row class="ion-no-margin ion-no-padding" *ngFor="let prescription of prescriptions;">
+            <ion-col class="ion-no-margin ion-no-padding" *ngIf="prescription.reminderTime == nextRxminder">
+              <ion-card-title>{{ prescription.preName }}</ion-card-title>
             </ion-col>
           </ion-row>
         </ion-list>
-    </ion-card-content> --->
+    </ion-card-content>
+
   </ion-card>
 
 
