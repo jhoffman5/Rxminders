@@ -23,23 +23,25 @@
       <ion-card-title *ngIf="!areRxmindersMade">Welcome to Rxminders!</ion-card-title>
       <ion-card-title *ngIf="areRxmindersMade">
         <ion-list class="ion-no-margin ion-no-padding">
-            <ion-row class="ion-no-margin ion-no-padding">
-              <!--ion-col class="ion-no-margin ion-no-padding"-->
-                <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding">Next rxminder at </span></pre>
-                <ion-datetime displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
-                <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding"> for</span></pre>
-              <!--/ion-col-->
-              <!---<ion-col class="ion-no-margin ion-no-padding" color="dark">
-                <ion-datetime displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
-              </ion-col>
-              <ion-col class="ion-no-margin ion-no-padding">
-                  for
-              </ion-col>--->
-            </ion-row>
-          </ion-list>
+          <ion-row class="ion-no-margin ion-no-padding">
+            <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding">Next rxminder at </span></pre>
+            <ion-datetime displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+            <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding"> for</span></pre>
+
+            <span *ngFor="let prescription of prescriptions;">
+              <span *ngIf="prescription.reminderTime == nextRxminder">
+                <pre class="ion-no-margin ion-no-padding" style="display: inline;">-</pre>
+                {{ prescription.preName }}
+                <pre class="ion-no-margin ion-no-padding" style="display: inline;">
+                </pre>
+              </span>
+            </span>
+
+          </ion-row>
+        </ion-list>
       </ion-card-title>
     </ion-card-header>
-
+    <!---
     <ion-card-content>
       <ion-list class="ion-no-margin ion-no-padding">
           <ion-row class="ion-no-margin ion-no-padding" *ngFor="let prescription of prescriptions;">
@@ -49,7 +51,7 @@
           </ion-row>
         </ion-list>
     </ion-card-content>
-
+    --->
   </ion-card>
 
 
@@ -65,12 +67,8 @@
             <ion-card-subtitle>
               <ion-list class="ion-no-margin ion-no-padding">
                 <ion-row class="ion-no-margin ion-no-padding">
-                  <ion-col class="ion-no-margin ion-no-padding">
-                      Rxminder Time:
-                  </ion-col>
-                  <ion-col class="ion-no-margin ion-no-padding">
-                    <ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
-                  </ion-col>
+                  <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding">Rxminder Time: </span></pre>
+                  <ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
                 </ion-row>
               </ion-list>
             </ion-card-subtitle>
