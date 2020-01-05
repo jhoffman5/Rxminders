@@ -20,10 +20,8 @@ export class HomePage {
 
   constructor(private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController) {
     this.areRxmindersMade = false;
-    //this.prescriptions = 
     this.allPrescriptions();
-    //this.nextRxminder = this.getNextRxminder();
-    //this.storage.clear();
+
     /*this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
 
@@ -36,8 +34,6 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
-   // this.prescriptions = this.allPrescriptions();
-   // this.nextRxminder = this.getNextRxminder();
    this.setPrescriptions().then( res => this.setNextRxminder() );
   }
 
@@ -63,21 +59,6 @@ export class HomePage {
    // console.log(retVal.length);
 
     return retVal;
-    /*return new Promise((resolve,reject)=>{
-      let retVal = [];
-
-      this.storage.forEach((value:any, key:string, iterationNumber: Number)=>
-      {
-        retVal.push(value);
-      });
-  
-      if(retVal==[])
-      {
-        this.areRxmindersMade = false;
-      }
-
-      resolve(retVal);
-    });*/
   }
 
   devErase(){
@@ -121,27 +102,35 @@ export class HomePage {
   }
 
   scheduleNotification(){
+
     var twelveHRTime = parseInt(this.nextRxminder[0]) * 10 + parseInt(this.nextRxminder[1]);
-
     var AMorPM = ((twelveHRTime < 12) ? 'AM' : 'PM');
-
     twelveHRTime = twelveHRTime % 12;
+    twelveHRTime = (twelveHRTime == 0) ? 12 : twelveHRTime; 
+    let twelveHRString = twelveHRTime.toString()+':'+this.nextRxminder[3]+this.nextRxminder[4]+' '+AMorPM;
 
-    twelveHRTime = (twelveHRTime == 0) ? 12 : twelveHRTime;
-    
-    let prescriptionText = 'Take [qty] of [prescription], and ... \nAt '+twelveHRTime.toString()+':'+this.nextRxminder[3]+this.nextRxminder[4]+' '+AMorPM;
+    var preList = '';
+    this.prescriptions.forEach(element => {
+      if(element.reminderTime == this.nextRxminder){
+        preList += element.preName + ", ";  //add dosages
+      }  
+    });
+
+    preList = preList.slice(0,preList.length-2); //erase last comma
+
+    let prescriptionText = 'Time to take: ' + preList;
 
     this.localNotifications.schedule({
-      id:1,
-      title: 'Time to take your prescriptions!',
-      text: prescriptionText,
+      id: 1,
+      title: 'It\'s '+twelveHRString+'!',
       trigger: { at: new Date(new Date().getTime() + 3600) },
       data: { myData: 'hidden Message' },
-      //icon:
+      icon: 'src//assets//icon//bottle.png',
       actions: [
-        { id: 'yes', title: 'Yes' },
-        { id: 'no',  title: 'No' }
-      ]
+        { id: 'taken', title: 'Confirm' },
+        { id: 'missed',  title: 'Skip' }
+      ],
+      text: prescriptionText
       //sound: this.plt.is('android')? 'file://sound.mp3': 'file://beep.caf'
       })
   }
