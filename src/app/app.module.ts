@@ -14,6 +14,8 @@ import { OCR } from '@ionic-native/ocr/ngx';
 
 import { IonicStorageModule } from '@ionic/storage';
 
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -28,6 +30,7 @@ import { IonicStorageModule } from '@ionic/storage';
     SplashScreen,
     Camera,
     OCR,
+    LocalNotifications,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]

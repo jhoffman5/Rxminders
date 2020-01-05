@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 
+import { Platform } from '@ionic/angular';
+import { AlertController } from  '@ionic/angular';
+
 import { Storage } from '@ionic/storage';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Component({
   selector: 'app-home',
@@ -14,12 +18,21 @@ export class HomePage {
   public areRxmindersMade: boolean = false;
   public nextRxminder: string;
 
-  constructor(private storage: Storage) {
+  constructor(private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController) {
     this.areRxmindersMade = false;
     //this.prescriptions = 
     this.allPrescriptions();
     //this.nextRxminder = this.getNextRxminder();
     //this.storage.clear();
+    /*this.localNotifications.on('click', (notification, state) => {
+      let json = JSON.parse(notification.data);
+
+      let alert = this.alertCtrl.create({
+        title: notification.title,
+        subTitle: json.myData
+      });
+      alert.present();
+    });*/
   }
 
   ionViewWillEnter() {
@@ -70,6 +83,7 @@ export class HomePage {
   devErase(){
     this.storage.clear();
   }
+
   getNextRxminder(){
     var prescriptions = []; 
     var next: string = "36:01"; // not a possible time
@@ -104,6 +118,32 @@ export class HomePage {
     });
 
     return next;
+  }
+
+  scheduleNotification(){
+    var twelveHRTime = parseInt(this.nextRxminder[0]) * 10 + parseInt(this.nextRxminder[1]);
+
+    var AMorPM = ((twelveHRTime < 12) ? 'AM' : 'PM');
+
+    twelveHRTime = twelveHRTime % 12;
+
+    twelveHRTime = (twelveHRTime == 0) ? 12 : twelveHRTime;
+    
+    let prescriptionText = 'Take [qty] of [prescription], and ... \nAt '+twelveHRTime.toString()+':'+this.nextRxminder[3]+this.nextRxminder[4]+' '+AMorPM;
+
+    this.localNotifications.schedule({
+      id:1,
+      title: 'Time to take your prescriptions!',
+      text: prescriptionText,
+      trigger: { at: new Date(new Date().getTime() + 3600) },
+      data: { myData: 'hidden Message' },
+      //icon:
+      actions: [
+        { id: 'yes', title: 'Yes' },
+        { id: 'no',  title: 'No' }
+      ]
+      //sound: this.plt.is('android')? 'file://sound.mp3': 'file://beep.caf'
+      })
   }
 
 }
