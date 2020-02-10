@@ -104,10 +104,16 @@ export class HomePage {
   scheduleNotification(){
 
     var twelveHRTime = parseInt(this.nextRxminder[0]) * 10 + parseInt(this.nextRxminder[1]);
+    alert(twelveHRTime);
+
+    var reminderHour = twelveHRTime;
+    var reminderMinute = this.nextRxminder[3].toString()+this.nextRxminder[4].toString();
+
     var AMorPM = ((twelveHRTime < 12) ? 'AM' : 'PM');
     twelveHRTime = twelveHRTime % 12;
     twelveHRTime = (twelveHRTime == 0) ? 12 : twelveHRTime; 
-    let twelveHRString = twelveHRTime.toString()+':'+this.nextRxminder[3]+this.nextRxminder[4]+' '+AMorPM;
+
+    var twelveHRString = twelveHRTime.toString()+':'+this.nextRxminder[3]+this.nextRxminder[4]+' '+AMorPM;
 
     var preList = '';
     this.prescriptions.forEach(element => {
@@ -123,7 +129,7 @@ export class HomePage {
     this.localNotifications.schedule({
       id: 1,
       title: 'It\'s '+twelveHRString+'!',
-      trigger: { at: new Date(new Date().getTime() + 3600) },
+      trigger: {every: {hour:reminderHour, minute: parseInt(reminderMinute)}, count:1},//{ at: new Date(new Date().getTime() + 3600) },
       data: { myData: 'hidden Message' },
       icon: 'src//assets//icon//bottle.png',
       actions: [
@@ -133,6 +139,7 @@ export class HomePage {
       text: prescriptionText
       //sound: this.plt.is('android')? 'file://sound.mp3': 'file://beep.caf'
       })
+
   }
 
 }
