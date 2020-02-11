@@ -24,18 +24,11 @@
       <ion-card-title *ngIf="areRxmindersMade">
         <ion-list class="ion-no-margin ion-no-padding">
           <ion-row class="ion-no-margin ion-no-padding">
-            <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding">Next rxminder at </span></pre>
+            <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding">Next rxminder is at </span></pre>
             <ion-datetime displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
-            <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding"> for</span></pre>
+            <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding"> for </span></pre>
 
-            <span *ngFor="let prescription of prescriptions;">
-              <span *ngIf="prescription.reminderTime == nextRxminder">
-                <pre class="ion-no-margin ion-no-padding" style="display: inline;">-</pre>
-                {{ prescription.preName }}
-                <pre class="ion-no-margin ion-no-padding" style="display: inline;">
-                </pre>
-              </span>
-            </span>
+            <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.reminderTime == nextRxminder"><pre class="ion-no-margin ion-no-padding" style="display: inline;">&#9679;</pre>{{ prescription.preName }}<pre class="ion-no-margin ion-no-padding" style="display: inline;"> </pre></span></span>
 
           </ion-row>
         </ion-list>
