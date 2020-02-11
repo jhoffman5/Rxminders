@@ -26,9 +26,9 @@
       <ion-datetime color="dark" displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
     </ion-chip>
   </ion-item-divider>
-  <ion-card class="welcome-card">
+  <ion-card class="welcome-card" *ngIf="!areRxmindersMade">
     <ion-card-header>
-      <ion-card-title *ngIf="!areRxmindersMade">Welcome to Rxminders!</ion-card-title>
+      <ion-card-title>Welcome to Rxminders!</ion-card-title>
       <ion-card-title *ngIf="areRxmindersMade">
         <ion-list class="ion-no-margin ion-no-padding">
           <ion-row class="ion-no-margin ion-no-padding">
@@ -58,6 +58,27 @@
         </ion-list>
     </ion-card-content>
     --->
+  </ion-card>
+  <ion-card>
+    <img src="" />
+    <ion-card-header style="background-color: #222428;">
+      <ion-row>
+        <ion-col>
+          <ion-card-title style="padding-top:10px; padding-left:10px; font-size: medium;" color="light">Upcoming Rxminder</ion-card-title>
+        </ion-col>
+        <ion-col>
+          <ion-chip style="float: right;" color="light"><ion-datetime displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime></ion-chip>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.reminderTime == nextRxminder">
+        <ion-chip color="success" style="font-size: medium;">
+        <ion-label color="dark">
+          {{ prescription.preName }}
+        </ion-label>
+      </ion-chip></span></span>
+    </ion-card-content>
   </ion-card>
 
 
@@ -89,6 +110,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <!--- v intro card v --->
   <ion-grid *ngIf="!areRxmindersMade">
     <ion-row>
