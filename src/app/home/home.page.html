@@ -18,6 +18,14 @@
 
 <!-- v normal home page with prescriptions entered v -->
 <ion-content>
+  <ion-item-divider>
+    <ion-chip color="primary">
+      <ion-label color="dark">
+        Next Rxminder:
+      </ion-label>
+      <ion-datetime color="dark" displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+    </ion-chip>
+  </ion-item-divider>
   <ion-card class="welcome-card">
     <ion-card-header>
       <ion-card-title *ngIf="!areRxmindersMade">Welcome to Rxminders!</ion-card-title>
@@ -28,7 +36,12 @@
             <ion-datetime displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
             <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding"> for </span></pre>
 
-            <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.reminderTime == nextRxminder"><pre class="ion-no-margin ion-no-padding" style="display: inline;">&#9679;</pre>{{ prescription.preName }}<pre class="ion-no-margin ion-no-padding" style="display: inline;"> </pre></span></span>
+            <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.reminderTime == nextRxminder">
+              <ion-chip color="success">
+              <ion-label color="dark">
+                {{ prescription.preName }}
+              </ion-label>
+            </ion-chip></span></span>
 
           </ion-row>
         </ion-list>
