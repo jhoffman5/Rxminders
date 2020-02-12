@@ -18,14 +18,14 @@
 
 <!-- v normal home page with prescriptions entered v -->
 <ion-content>
-  <ion-item-divider>
+ <!--- <ion-item-divider>
     <ion-chip color="primary">
       <ion-label color="dark">
         Next Rxminder:
       </ion-label>
       <ion-datetime color="dark" displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
     </ion-chip>
-  </ion-item-divider>
+  </ion-item-divider>--->
   <ion-card class="welcome-card" *ngIf="!areRxmindersMade">
     <ion-card-header>
       <ion-card-title>Welcome to Rxminders!</ion-card-title>
@@ -59,7 +59,7 @@
     </ion-card-content>
     --->
   </ion-card>
-  <ion-card>
+  <ion-card *ngIf="areRxmindersMade">
     <img src="" />
     <ion-card-header style="background-color: #222428;">
       <ion-row>
@@ -71,7 +71,7 @@
         </ion-col>
       </ion-row>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content style="padding-top: 10px;">
       <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.reminderTime == nextRxminder">
         <ion-chip color="success" style="font-size: medium;">
         <ion-label color="dark">
@@ -150,17 +150,17 @@
     <!---<ion-list-header>
       <ion-label>Resources</ion-label>
     </ion-list-header>--->
-    <ion-item [routerLink]="['/', 'choose-input']">
+    <ion-item [routerLink]="['/', 'choose-input']" color="dark">
       <ion-icon slot="start" color="primary" name="add"></ion-icon>
       <ion-label>Add Prescription</ion-label>
     </ion-item>
-    <ion-button (click)="devErase()" color="dark">
+    <ion-item (click)="devErase()" color="dark">
       <ion-icon slot="start" color="primary" name="add"></ion-icon>
       <ion-label>Erase Prescriptions [just for demo]</ion-label>
-    </ion-button>
-    <ion-button (click)="scheduleNotification()" color="dark">
+    </ion-item>
+    <ion-item (click)="scheduleNotification()" color="dark">
       <ion-icon slot="start" color="primary" name="add"></ion-icon>
       <ion-label>Schedule Notification</ion-label>
-    </ion-button>
+    </ion-item>
   </ion-list>
 </ion-content>
