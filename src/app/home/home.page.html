@@ -18,49 +18,15 @@
 
 <!-- v normal home page with prescriptions entered v -->
 <ion-content>
- <!--- <ion-item-divider>
-    <ion-chip color="primary">
-      <ion-label color="dark">
-        Next Rxminder:
-      </ion-label>
-      <ion-datetime color="dark" displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
-    </ion-chip>
-  </ion-item-divider>--->
-  <ion-card class="welcome-card" *ngIf="!areRxmindersMade">
+
+  <ion-card class="welcome-card" *ngIf="!areRxmindersMade" color="dark">
     <ion-card-header>
       <ion-card-title>Welcome to Rxminders!</ion-card-title>
-      <ion-card-title *ngIf="areRxmindersMade">
-        <ion-list class="ion-no-margin ion-no-padding">
-          <ion-row class="ion-no-margin ion-no-padding">
-            <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding">Next rxminder is at </span></pre>
-            <ion-datetime displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime>
-            <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding"> for </span></pre>
-
-            <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.reminderTime == nextRxminder">
-              <ion-chip color="success">
-              <ion-label color="dark">
-                {{ prescription.preName }}
-              </ion-label>
-            </ion-chip></span></span>
-
-          </ion-row>
-        </ion-list>
-      </ion-card-title>
     </ion-card-header>
-    <!---
-    <ion-card-content>
-      <ion-list class="ion-no-margin ion-no-padding">
-          <ion-row class="ion-no-margin ion-no-padding" *ngFor="let prescription of prescriptions;">
-            <ion-col class="ion-no-margin ion-no-padding" *ngIf="prescription.reminderTime == nextRxminder">
-              <ion-card-title>{{ prescription.preName }}</ion-card-title>
-            </ion-col>
-          </ion-row>
-        </ion-list>
-    </ion-card-content>
-    --->
   </ion-card>
+
   <ion-card *ngIf="areRxmindersMade">
-    <img src="" />
+    <img src=""/>
     <ion-card-header style="background-color: #222428;">
       <ion-row>
         <ion-col>
@@ -84,13 +50,35 @@
 
   <ion-grid *ngIf="areRxmindersMade" lines="none">
     <ion-list-header>
-      <ion-label>Current Prescriptions</ion-label>
+      <ion-label color="dark">Current Prescriptions</ion-label>
     </ion-list-header>
     <ion-row>
       <ion-col>
         <ion-card *ngFor="let prescription of prescriptions;">
-          <ion-card-header>
-            <ion-card-title>{{ prescription.preName }}</ion-card-title>
+          <ion-card-header color="dark">
+            <ion-row>
+              <ion-col>
+                <ion-chip color="success" style="font-size: x-large; padding:20px;">
+                  <ion-label color="light">
+                    {{ prescription.preName }}
+                  </ion-label>
+                </ion-chip>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-chip color="light" style="float: center;"><ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime></ion-chip>
+              </ion-col>
+              <ion-col>
+                <ion-chip color="light">
+                  <ion-label color="light">
+                    qty: {{ prescription.quantity }}
+                  </ion-label>
+                </ion-chip>
+              </ion-col>
+            </ion-row>
+
+            <!---<ion-card-title>{{ prescription.preName }}</ion-card-title>
             <ion-card-subtitle>
               <ion-list class="ion-no-margin ion-no-padding">
                 <ion-row class="ion-no-margin ion-no-padding">
@@ -98,10 +86,10 @@
                   <ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
                 </ion-row>
               </ion-list>
-            </ion-card-subtitle>
+            </ion-card-subtitle>--->
           </ion-card-header>
-          <hr color="primary">
-          <ion-card-content>
+          <hr color="primary" style="margin:0px;">
+          <ion-card-content color="dark">
             <p>
               {{ prescription.quantity }} left
             </p>
@@ -146,14 +134,12 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-list lines="none">
+  
+
+  <ion-list lines="none" style="padding-bottom: 0px;">
     <!---<ion-list-header>
       <ion-label>Resources</ion-label>
     </ion-list-header>--->
-    <ion-item [routerLink]="['/', 'choose-input']" color="dark">
-      <ion-icon slot="start" color="primary" name="add"></ion-icon>
-      <ion-label>Add Prescription</ion-label>
-    </ion-item>
     <ion-item (click)="devErase()" color="dark">
       <ion-icon slot="start" color="primary" name="add"></ion-icon>
       <ion-label>Erase Prescriptions [just for demo]</ion-label>
@@ -162,5 +148,14 @@
       <ion-icon slot="start" color="primary" name="add"></ion-icon>
       <ion-label>Schedule Notification</ion-label>
     </ion-item>
+    <ion-item [routerLink]="['/', 'choose-input']" color="dark">
+      <ion-icon slot="start" color="primary" name="add"></ion-icon>
+      <ion-label>Add Prescription</ion-label>
+    </ion-item>
   </ion-list>
+
 </ion-content>
+
+<ion-footer no-shadow>
+
+</ion-footer>
