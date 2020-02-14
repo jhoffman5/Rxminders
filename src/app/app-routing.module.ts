@@ -23,7 +23,8 @@ const routes: Routes = [
   { 
     path: 'choose-input', 
     loadChildren: './choose-input/choose-input.module#ChooseInputPageModule' 
-  }
+  },
+  { path: 'info-page', loadChildren: './info-page/info-page.module#InfoPagePageModule' }
 ];
 
 @NgModule({
