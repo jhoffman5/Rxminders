@@ -53,11 +53,8 @@ export class HomePage {
       retVal.push(value);
       this.areRxmindersMade = true;
     }).then(res=>{
-      //console.log(retVal.length);
       this.prescriptions = retVal;
     });
-
-   // console.log(retVal.length);
 
     return retVal;
   }

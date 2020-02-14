@@ -21,7 +21,7 @@ export class InfoPagePage implements OnInit {
   constructor(public navCtrl: NavController, private route: ActivatedRoute, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController) {
     this.param = this.route.snapshot.paramMap.get('preName').toString();
     console.log(this.param);
-    this.getPrescription(this.param);
+    this.updateInfo();
     //.then((data)=>{this.prescription=this.getPrescription(this.param)});
   }
 
@@ -29,12 +29,20 @@ export class InfoPagePage implements OnInit {
 
   }
 
-  ionViewWillEnter() {
-    
+  async updateInfo(){
+    this.prescription = this.getPrescription();
   }
 
-  getPrescription(preName){
-    this.storage.get(preName);
+  ionViewWillEnter() {
+    this.updateInfo();
+  }
+
+  getPrescription(){
+    var retVal = this.storage.get(this.param).then(res=>{
+      this.prescription = res;
+    });
     console.log(this.prescription);
+    //this.prescription = retVal;
+    return retVal;
   }
 }

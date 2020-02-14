@@ -16,5 +16,11 @@
 </ion-header>
 
 <ion-content>
-
+<p>
+  {{ prescription.preName }}
+</p>
+<ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+<p>
+  {{ prescription.quantity }}
+</p>
 </ion-content>
