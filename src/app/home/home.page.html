@@ -64,17 +64,8 @@
                   </ion-label>
                 </ion-chip>
               </ion-col>
-            </ion-row>
-            <ion-row>
               <ion-col>
                 <ion-chip color="light" style="float: center;"><ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime></ion-chip>
-              </ion-col>
-              <ion-col>
-                <ion-chip color="light">
-                  <ion-label>
-                    qty: {{ prescription.quantity }}
-                  </ion-label>
-                </ion-chip>
               </ion-col>
             </ion-row>
 
@@ -88,12 +79,6 @@
               </ion-list>
             </ion-card-subtitle>--->
           </ion-card-header>
-          <hr color="primary" style="margin:0px;">
-          <ion-card-content color="dark">
-            <p>
-              {{ prescription.quantity }} left
-            </p>
-          </ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
