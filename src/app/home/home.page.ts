@@ -5,6 +5,7 @@ import { AlertController } from  '@ionic/angular';
 
 import { Storage } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,7 @@ export class HomePage {
   public areRxmindersMade: boolean = false;
   public nextRxminder: string;
 
-  constructor(private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController) {
     this.areRxmindersMade = false;
     this.allPrescriptions();
 
@@ -142,4 +143,11 @@ export class HomePage {
 
   }
 
+  public infoPage(prescription)
+  {
+    this.navCtrl.navigateForward("info-page/"+prescription.preName);
+  }
+
 }
+
+
