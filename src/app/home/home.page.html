@@ -39,7 +39,7 @@
     </ion-card-header>
     <ion-card-content style="padding-top: 10px;">
       <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.reminderTime == nextRxminder">
-        <ion-chip color="success" style="font-size: medium;">
+        <ion-chip color="success" style="font-size: medium; max-width: 100%;">
         <ion-label color="dark">
           {{ prescription.preName }}
         </ion-label>
@@ -54,12 +54,12 @@
     </ion-list-header>
     <ion-row>
       <ion-col>
-        <ion-card *ngFor="let prescription of prescriptions;">
+        <ion-card *ngFor="let prescription of prescriptions;" [routerLink]="['/', 'choose-input']">
           <ion-card-header color="dark">
             <ion-row>
               <ion-col>
-                <ion-chip color="success" style="font-size: x-large; padding:20px;">
-                  <ion-label color="light">
+                <ion-chip color="success" style="font-size: x-large; padding:20px; max-width: 100%;">
+                  <ion-label color="light" style="max-width: 100%;">
                     {{ prescription.preName }}
                   </ion-label>
                 </ion-chip>
@@ -71,7 +71,7 @@
               </ion-col>
               <ion-col>
                 <ion-chip color="light">
-                  <ion-label color="light">
+                  <ion-label>
                     qty: {{ prescription.quantity }}
                   </ion-label>
                 </ion-chip>
@@ -155,7 +155,3 @@
   </ion-list>
 
 </ion-content>
-
-<ion-footer no-shadow>
-
-</ion-footer>
