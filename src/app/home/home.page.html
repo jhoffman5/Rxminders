@@ -65,7 +65,11 @@
                 </ion-chip>
               </ion-col>
               <ion-col>
-                <ion-chip color="light" style="float: center;"><ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime></ion-chip>
+                <ion-chip color="light" style="float: right;">
+                  <ion-label style="max-width: 100%;">
+                    <ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+                  </ion-label>
+                </ion-chip>
               </ion-col>
             </ion-row>
 
@@ -128,11 +132,11 @@
     <ion-item (click)="devErase()" color="dark">
       <ion-icon slot="start" color="primary" name="add"></ion-icon>
       <ion-label>Erase Prescriptions [just for demo]</ion-label>
-    </ion-item>
+    </ion-item><!---
     <ion-item (click)="scheduleNotification()" color="dark">
       <ion-icon slot="start" color="primary" name="add"></ion-icon>
       <ion-label>Schedule Notification</ion-label>
-    </ion-item>
+    </ion-item>--->
     <ion-item [routerLink]="['/', 'choose-input']" color="dark">
       <ion-icon slot="start" color="primary" name="add"></ion-icon>
       <ion-label>Add Prescription</ion-label>

@@ -34,8 +34,15 @@ export class HomePage {
     });*/
   }
 
-  ionViewWillEnter() {
+  /*ionViewWillEnter() {
    this.setPrescriptions().then( res => this.setNextRxminder() );
+   this.scheduleNotification()
+  }*/
+
+  ionViewDidEnter() {
+    this.localNotifications.cancelAll(); // clear past notifications
+    this.setPrescriptions().then( res => this.setNextRxminder() ); // set new notification
+    this.scheduleNotification()
   }
 
   async setPrescriptions(){
