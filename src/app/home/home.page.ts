@@ -145,6 +145,12 @@ export class HomePage {
     this.navCtrl.navigateForward("info-page/"+prescription.preName);
   }
 
+  public popover(prescription)
+  {
+    //import popover controller
+    //use infopage(prescription) for clicking EDIT on popover
+  }
+
 }
 
 
