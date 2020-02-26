@@ -34,15 +34,15 @@ export class HomePage {
     });*/
   }
 
-  /*ionViewWillEnter() {
+  ionViewWillEnter() {
    this.setPrescriptions().then( res => this.setNextRxminder() );
    this.scheduleNotification()
-  }*/
+  }
 
   ionViewDidEnter() {
-    this.localNotifications.cancelAll(); // clear past notifications
+    //this.localNotifications.cancelAll(); // clear past notifications
     this.setPrescriptions().then( res => this.setNextRxminder() ); // set new notification
-    this.scheduleNotification()
+    this.scheduleNotification();
   }
 
   async setPrescriptions(){
@@ -82,7 +82,6 @@ export class HomePage {
       prescriptions.push(value);
       this.areRxmindersMade = true;
     }).then( res => {
-
       prescriptions.forEach(element => {
         //console.log(element);
         if(element.reminderTime > currentTime && element.reminderTime < next)
@@ -109,7 +108,7 @@ export class HomePage {
   scheduleNotification(){
 
     var twelveHRTime = parseInt(this.nextRxminder[0]) * 10 + parseInt(this.nextRxminder[1]);
-    alert(twelveHRTime);
+    //alert(twelveHRTime);
 
     var reminderHour = twelveHRTime;
     var reminderMinute = this.nextRxminder[3].toString()+this.nextRxminder[4].toString();

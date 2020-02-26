@@ -39,7 +39,7 @@
     </ion-card-header>
     <ion-card-content style="padding-top: 10px;">
       <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.reminderTime == nextRxminder">
-        <ion-chip color="success" style="font-size: medium; max-width: 100%;">
+        <ion-chip color="success" style="font-size: medium; max-width: 100%;" (click)="infoPage(prescription)">
         <ion-label color="dark">
           {{ prescription.preName }}
         </ion-label>
