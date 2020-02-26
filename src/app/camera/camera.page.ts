@@ -4,6 +4,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 import { OCR } from '@ionic-native/ocr/ngx'
 
+import { File } from '@ionic-native/file/ngx';
+
 @Component({
   selector: 'app-camera',
   templateUrl: './camera.page.html',
@@ -14,7 +16,8 @@ export class CameraPage implements OnInit {
   currentImage: any;
   public words: any;
 
-  constructor(private camera: Camera, private ocr: OCR) { 
+  constructor(private camera: Camera, private ocr: OCR, public file: File) { 
+    this.loadFDAList();
   }
 
   ngOnInit() {
@@ -64,9 +67,25 @@ export class CameraPage implements OnInit {
         //set 'var qty' to words[i+1]
       }
     }
-
-
-
     this.words = words;
+  }
+
+  loadFDAList() {
+    this.file.readAsText(this.file.applicationDirectory + "www/assets", "FDA_drugs.json")
+    .then(
+      (data)=>{
+        console.log(data);
+        console.log("Drug File Read");
+      }
+    )
+    .catch(
+      (e)=>{
+        console.log(e);
+      }
+    )
+    /*this.http.get('src\\assets\\FDA_drugs.json',{},{})
+    .then((data) => {
+      console.log(data);
+    });*/
   }
 }

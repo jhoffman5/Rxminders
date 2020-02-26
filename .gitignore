@@ -34,3 +34,4 @@ npm-debug.log*
 .properties
 .xml
 .iml
+src/assets/FDA_drugs.json

@@ -16,6 +16,8 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
+import { File } from '@ionic-native/file/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -31,6 +33,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
     Camera,
     OCR,
     LocalNotifications,
+    File,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]
