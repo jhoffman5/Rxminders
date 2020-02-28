@@ -15,9 +15,15 @@ export class CameraPage implements OnInit {
 
   currentImage: any;
   public words: any;
+  public drugs: Set<string>;
 
   constructor(private camera: Camera, private ocr: OCR, public file: File) { 
     this.loadFDAList();
+  }
+
+  ionViewDidEnter(){
+   // alert("Entered");
+   // this.loadFDAList();
   }
 
   ngOnInit() {
@@ -71,16 +77,25 @@ export class CameraPage implements OnInit {
   }
 
   loadFDAList() {
-    this.file.readAsText(this.file.applicationDirectory + "www/assets", "FDA_drugs.json")
+    /*
+    this.file.checkDir(this.file.applicationDirectory, 'www').then(_ => alert('Directory exists')).catch(err =>
+      alert('Directory doesn\'t exist'));
+
+
+    alert(this.file.applicationStorageDirectory.toString());
+
+    this.file.readAsText(this.file.applicationDirectory + "\\www", "FDA_drugs.json")
     .then(
       (data)=>{
         console.log(data);
         console.log("Drug File Read");
+        alert("Drug File Read");
       }
     )
     .catch(
       (e)=>{
         console.log(e);
+        alert(e.message); 
       }
     )
     /*this.http.get('src\\assets\\FDA_drugs.json',{},{})
