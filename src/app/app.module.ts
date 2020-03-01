@@ -18,6 +18,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 import { File } from '@ionic-native/file/ngx';
 
+import { HTTP } from '@ionic-native/http/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -34,6 +36,8 @@ import { File } from '@ionic-native/file/ngx';
     OCR,
     LocalNotifications,
     File,
+    HTTP,
+    //RxclassApi,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]

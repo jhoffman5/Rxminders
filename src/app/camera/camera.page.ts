@@ -6,24 +6,25 @@ import { OCR } from '@ionic-native/ocr/ngx'
 
 import { File } from '@ionic-native/file/ngx';
 
+import { HTTP } from '@ionic-native/http/ngx';
+
 @Component({
   selector: 'app-camera',
   templateUrl: './camera.page.html',
-  styleUrls: ['./camera.page.scss'],
+  styleUrls: ['./camera.page.scss']
 })
 export class CameraPage implements OnInit {
 
   currentImage: any;
   public words: any;
-  public drugs: Set<string>;
+  public drugs: Set <string>;
+  public prescriptionsInImg: string[];
 
-  constructor(private camera: Camera, private ocr: OCR, public file: File) { 
-    this.loadFDAList();
-  }
+  constructor(private camera: Camera, private ocr: OCR, public file: File, public http: HTTP){//, private rx: RxclassApi) { 
+
+ }
 
   ionViewDidEnter(){
-   // alert("Entered");
-   // this.loadFDAList();
   }
 
   ngOnInit() {
@@ -56,7 +57,17 @@ export class CameraPage implements OnInit {
       console.log("Camera issue:" + err);
     });
 
+    this.words = ["adderall","notaprescription"];
+
+    this.words.forEach(element => {
+      console.log(element)
+      if(this.checkInFDAServer(element))
+      {
+        this.prescriptionsInImg.push(element);
+      }
+    });
     //this.camera.getPicture(onSuccess, onFail, { quality: 100, correctOrientation: true });
+    console.log("PRESCRIPTIONS: "+this.prescriptionsInImg);
   }
 
   cleanText(words: string[]){
@@ -76,31 +87,25 @@ export class CameraPage implements OnInit {
     this.words = words;
   }
 
-  loadFDAList() {
-    /*
-    this.file.checkDir(this.file.applicationDirectory, 'www').then(_ => alert('Directory exists')).catch(err =>
-      alert('Directory doesn\'t exist'));
+  async checkInFDAServer(word:string): Promise<boolean> {
 
+    var retVal: boolean = false;
 
-    alert(this.file.applicationStorageDirectory.toString());
+    this.http.get('http://rxnav.nlm.nih.gov/REST/rxclass/class/byDrugName.json/?drugName='+word,{},{})
+    .then(data => {
+      console.log(word);
+      console.log(JSON.stringify("DRUG: "+data.data));
+      retVal = true;
+      return retVal;
+    })
+    .catch( err => {
+      console.log(err.status);
+      console.log(err.error); // error message as string
+      console.log(err.headers);
+      retVal = false;
+      return retVal;
+    })
 
-    this.file.readAsText(this.file.applicationDirectory + "\\www", "FDA_drugs.json")
-    .then(
-      (data)=>{
-        console.log(data);
-        console.log("Drug File Read");
-        alert("Drug File Read");
-      }
-    )
-    .catch(
-      (e)=>{
-        console.log(e);
-        alert(e.message); 
-      }
-    )
-    /*this.http.get('src\\assets\\FDA_drugs.json',{},{})
-    .then((data) => {
-      console.log(data);
-    });*/
+    return retVal;
   }
 }
