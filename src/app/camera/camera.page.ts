@@ -18,7 +18,7 @@ export class CameraPage implements OnInit {
   currentImage: any;
   public words: any;
   public drugs: Set <string>;
-  public prescriptionsInImg: string[];
+  public prescriptionsInImg: string[] = [];
 
   constructor(private camera: Camera, private ocr: OCR, public file: File, public http: HTTP){//, private rx: RxclassApi) { 
 
@@ -57,17 +57,17 @@ export class CameraPage implements OnInit {
       console.log("Camera issue:" + err);
     });
 
-    this.words = ["adderall","notaprescription"];
+    //this.words = ["notap","asjkdfkla","ajlsdlnfkjabsdf","glycerin"];
 
-    this.words.forEach(element => {
-      console.log(element)
-      if(this.checkInFDAServer(element))
-      {
-        this.prescriptionsInImg.push(element);
-      }
-    });
-    //this.camera.getPicture(onSuccess, onFail, { quality: 100, correctOrientation: true });
-    console.log("PRESCRIPTIONS: "+this.prescriptionsInImg);
+    this.checkInFDAServer()
+      .then(res=>{
+        console.log(`promise result: ${res}`);
+        //send res and qty to form
+        this.words = res;
+      })
+      .catch(rej=>{
+        console.log(rej);
+      });
   }
 
   cleanText(words: string[]){
@@ -87,25 +87,25 @@ export class CameraPage implements OnInit {
     this.words = words;
   }
 
-  async checkInFDAServer(word:string): Promise<boolean> {
+  checkInFDAServer(): Promise<string> {
+    return new Promise((resolve)=>{
+      var word = "placeholder";
+      console.log("...");
 
-    var retVal: boolean = false;
-
-    this.http.get('http://rxnav.nlm.nih.gov/REST/rxclass/class/byDrugName.json/?drugName='+word,{},{})
-    .then(data => {
-      console.log(word);
-      console.log(JSON.stringify("DRUG: "+data.data));
-      retVal = true;
-      return retVal;
+      this.words.forEach(element => {
+        this.http.get('http://rxnav.nlm.nih.gov/REST/rxclass/class/byDrugName.json/?drugName='+element,{},{})
+          .then(data => {
+            if(JSON.stringify(JSON.parse(data.data).rxclassDrugInfoList) != undefined){
+              word = element;
+              resolve(element);
+            }
+        })
+          .catch( err => {
+            console.log(err.status);
+            console.log(err.error); // error message as string
+            console.log(err.headers);
+        })
+      });
     })
-    .catch( err => {
-      console.log(err.status);
-      console.log(err.error); // error message as string
-      console.log(err.headers);
-      retVal = false;
-      return retVal;
-    })
-
-    return retVal;
   }
 }
