@@ -17,7 +17,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 import { File } from '@ionic-native/file/ngx';
-
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 
 @NgModule({
@@ -37,7 +37,7 @@ import { HTTP } from '@ionic-native/http/ngx';
     LocalNotifications,
     File,
     HTTP,
-    //RxclassApi,
+    InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]

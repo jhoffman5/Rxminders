@@ -23,16 +23,19 @@
       <ion-card-title>
         {{ prescription.preName }}
       </ion-card-title>
+      <img src="../../assets/pill-bottle.svg" width="100px" height="100px">
     </ion-card-header>
-    <ion-card-content>
-      <ion-item>
+    <ion-card-content style="padding:0; margin:0;">
+      <ion-item color="dark">
         Rxminder Time:<pre> </pre><ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
       </ion-item>
-      <ion-item>
+      <hr color="primary" style="padding:0; margin:0;">
+      <ion-item color="dark">
         Quantity Left: {{ prescription.quantity }}
       </ion-item>
-      <ion-item>
-        <a href="www.google.com">Info</a>
+      <hr color="primary" style="padding:0; margin:0;">
+      <ion-item color="dark">
+        <a color="dark" (click)="search( prescription.preName )">Search Info</a>
       </ion-item>
     </ion-card-content>
   </ion-card>
