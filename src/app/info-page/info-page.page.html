@@ -18,11 +18,22 @@
 </ion-header>
 
 <ion-content>
-<p>
-  {{ prescription.preName }}
-</p>
-<ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
-<p>
-  {{ prescription.quantity }}
-</p>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        {{ prescription.preName }}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        Rxminder Time:<pre> </pre><ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        Quantity Left: {{ prescription.quantity }}
+      </ion-item>
+      <ion-item>
+        <a href="www.google.com">Info</a>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
