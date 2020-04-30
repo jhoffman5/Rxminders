@@ -1,21 +1,21 @@
 <ion-header>
   <ion-toolbar color="dark">
     <ion-buttons slot="start">
-      <ion-button [routerLink]="['/','home']" color="primary">
-        <ion-icon name="arrow-back"></ion-icon>
-      </ion-button>
-      <ion-title>
-        Prescription Info
-      </ion-title>
+      <ion-menu-button color="primary"></ion-menu-button>
     </ion-buttons>
+
+    <ion-title>
+      {{ prescription.preName }} Info
+    </ion-title>
 
     <ion-buttons slot="end">
       <ion-button [routerLink]="['/', 'home']" color="primary">
-        <ion-icon slot="icon-only" name="grid"></ion-icon> <!--- Rxminders Logo HERE --->
+        <ion-icon slot="icon-only" src="assets/icon1.svg" color="primary"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<!-- ^ header ^ -->
 
 <ion-content>
   <ion-card>
