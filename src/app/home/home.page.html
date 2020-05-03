@@ -20,7 +20,7 @@
 <!-- v normal home page with prescriptions entered v -->
 <ion-content>
 
-  <ion-card class="welcome-card" *ngIf="!areRxmindersMade" color="dark">
+  <ion-card class="welcome-card" *ngIf="countActive == 0 && countArchived == 0" color="dark">
     <ion-card-header>
       <ion-card-title>Welcome to Rxminders!</ion-card-title>
     </ion-card-header>
@@ -54,7 +54,6 @@
     </ion-list-header>
     <ion-row>
       <ion-col>
-
         <ion-card *ngIf="countActive == 0"color="primary">
           <ion-card-header color="primary">
             <ion-row>
@@ -69,7 +68,7 @@
           </ion-card-header>
         </ion-card>
 
-        <span *ngFor="let prescription of prescriptions;">
+        <span *ngFor="let prescription of prescriptions;" style="padding:0; margin:0;">
           <ion-card *ngIf="prescription.status=='active'">
             <ion-card-header color="dark" *ngIf="prescription.status=='active'">
               <ion-row>
@@ -80,7 +79,7 @@
                     </ion-label>
                   </ion-chip>
                 </ion-col>
-                <ion-col *ngIf="!deleteToggle.isChecked" (click)="infoPage(prescription)">
+                <ion-col *ngIf="!deleteToggle.isChecked && !archiveToggle.isChecked" (click)="infoPage(prescription)">
                   <ion-chip color="light" style="float: right;">
                     <ion-label style="max-width: 100%;">
                       <ion-datetime style="pointer-events: none;" displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
@@ -91,6 +90,13 @@
                   <ion-chip color="danger" style="float: right;" (click)="deletePopUp(prescription.preName)">
                     <ion-label style="max-width: 100%;">
                       Delete
+                    </ion-label>
+                  </ion-chip>
+                </ion-col>
+                <ion-col *ngIf="archiveToggle.isChecked">
+                  <ion-chip color="danger" style="float: right;" (click)="archivePopUp(prescription.preName)">
+                    <ion-label style="max-width: 100%;">
+                      Archive
                     </ion-label>
                   </ion-chip>
                 </ion-col>
@@ -131,7 +137,7 @@
                     </ion-label>
                   </ion-chip>
                 </ion-col>
-                <ion-col *ngIf="!deleteToggle.isChecked" (click)="infoPage(prescription)">
+                <ion-col *ngIf="!deleteToggle.isChecked && !archiveToggle.isChecked" (click)="infoPage(prescription)">
                   <ion-chip color="light" style="float: right;">
                     <ion-label style="max-width: 100%;">
                       <ion-datetime style="pointer-events: none;" displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
@@ -142,6 +148,13 @@
                   <ion-chip color="danger" style="float: right;" (click)="deletePopUp(prescription.preName)">
                     <ion-label style="max-width: 100%;">
                       Delete
+                    </ion-label>
+                  </ion-chip>
+                </ion-col>
+                <ion-col *ngIf="archiveToggle.isChecked">
+                  <ion-chip color="success" style="float: right;" (click)="renewPopUp(prescription.preName)">
+                    <ion-label style="max-width: 100%;">
+                      Renew
                     </ion-label>
                   </ion-chip>
                 </ion-col>

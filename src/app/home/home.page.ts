@@ -30,9 +30,6 @@ export class HomePage {
 
 
   constructor(public navCtrl: NavController, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController) {
-    this.areRxmindersMade = false;
-    this.countActive = 0;
-    this.countArchived = 0;
     this.deleteToggle = {
       val:'Toggle Delete', isCheck: false
     };
@@ -173,7 +170,7 @@ export class HomePage {
       }
   }
 
-  async deletePopUp(preName: String){
+  async deletePopUp(preName: string){
     console.log(preName);
 
     const alert = await this.alertCtrl.create({
@@ -184,19 +181,12 @@ export class HomePage {
         role:'confirm',
         handler: ()=>{
           this.delete(preName);
-          this.getAllPrescriptions().then( (pres) => {
-            this.prescriptions = pres;
-            this.getRxminder().then( (rxminder) =>{
-              this.nextRxminder = rxminder;
-              this.scheduleNotification();
-            });
-          });
         }
       }, {
         text: 'Cancel',
         role:'cancel',
         handler: ()=>{
-          console.log('Delete Cancelled: '+preName);
+          console.log('Delete Canceled: '+preName);
         }
       }]
     });
@@ -204,24 +194,104 @@ export class HomePage {
     await alert.present();
   }
 
-  public toggleDelete()
+  async archivePopUp(preName: string)
   {
-    if(this.archiveToggle.isCheck != true){
-      this.deleteToggle.isCheck = !this.deleteToggle.isCheck;
-    }
+    console.log(preName);
+
+    const alert = await this.alertCtrl.create({
+      header: 'Archive',
+      subHeader: 'Archive '+preName+"?",
+      buttons:[{
+        text:'Confirm',
+        role:'confirm',
+        handler: ()=>{
+          this.archive(preName);
+        }
+      }, {
+        text: 'Cancel',
+        role:'cancel',
+        handler: ()=>{
+          console.log('Archive Canceled: '+preName);
+        }
+      }]
+    });
+
+    await alert.present();
   }
 
-  public toggleArchive()
+  async renewPopUp(prescription: string)
   {
-    //if(this.deleteToggle.isCheck != true){
-    //  this.archiveToggle.isCheck = !this.archiveToggle.isCheck;
-    //}
-    console.log(this.archiveToggle.isCheck);
+    console.log(prescription);
+
+    const alert = await this.alertCtrl.create({
+      header: 'Renew',
+      subHeader: 'Renew '+prescription+"?",
+      buttons:[{
+        text:'Confirm',
+        role:'confirm',
+        handler: ()=>{
+          this.activate(prescription);
+        }
+      }, {
+        text: 'Cancel',
+        role:'cancel',
+        handler: ()=>{
+          console.log('Archive Canceled: '+prescription);
+        }
+      }]
+    });
+
+    await alert.present();
   }
 
-  public delete(prescription: String)
+  public delete(prescription: string)
   {
-    this.storage.remove(prescription.toString());
+    this.storage.remove(prescription)
+      .then(()=>{
+        this.getAllPrescriptions().then( (pres) => {
+          this.prescriptions = pres;
+          this.getRxminder().then( (rxminder) =>{
+            this.nextRxminder = rxminder;
+            this.scheduleNotification();
+          });
+        });
+      });
+  }
+
+  public archive(prescription: string)
+  {
+    this.storage.get(prescription)
+      .then(obj =>{
+        obj["status"] = "archived";
+        this.storage.set(prescription, obj)
+          .then(()=>{
+            this.getAllPrescriptions().then( (pres) => {
+              this.prescriptions = pres;
+              this.getRxminder().then( (rxminder) =>{
+                this.nextRxminder = rxminder;
+                this.scheduleNotification();
+              });
+            });
+        });
+    });
+  }
+
+  public activate(prescription: string)
+  {
+    this.storage.get(prescription)
+      .then(obj =>{
+        obj["status"] = "active";
+        this.storage.set(prescription, obj)
+          .then(()=>{
+            this.getAllPrescriptions().then( (pres) => {
+              this.prescriptions = pres;
+              this.getRxminder().then( (rxminder) =>{
+                this.nextRxminder = rxminder;
+                this.scheduleNotification();
+              });
+            });
+          });
+      });
   }
 
   public chooseInputPage()
