@@ -6,33 +6,72 @@ import { ToastController } from '@ionic/angular';
 
 import { Router } from '@angular/router';
 
+import { NavController } from '@ionic/angular';
+
 @Component({
   selector: 'app-manual-input',
   templateUrl: './manual-input.page.html',
   styleUrls: ['./manual-input.page.scss']
 })
 export class ManualInputPage implements OnInit {
-  formData = {preName:"", reminderTime:"", quantity: null}
-  
-  constructor(private storage: Storage, private router:Router, public toastController:ToastController){
+  formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:""};
+
+  constructor(public navCtrl: NavController, private storage: Storage, private router:Router, public toastController:ToastController){
+    this.formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:""};
   }
 
   ngOnInit() {
   }
 
+  checkForm(): Promise<Object[]>{
+    return new Promise((resolve)=>{
+      this.storage.length()
+        .then(num => {
+          if(this.formData.preName==""){
+            this.formData.preName = "Prescription "+num;
+          }
+          if(this.formData.reminderTime==""){
+            this.formData.reminderTime ="00:00";
+          }
+          if(this.formData.dosage==""){
+            this.formData.dosage="No Dosage Data";
+          }
+          if(this.formData.quantity==null){
+            this.formData.quantity=0;
+          }
+          if(this.formData.notes==""){
+            this.formData.notes="No Notes";
+          }
+          resolve([num]);
+        })
+          .catch( err => {
+            console.log(err.error);
+          })
+    });
+  }
+
   logForm(){
-    console.log(this.formData);
-    let formStuff = this.formData;
+    this.checkForm()
+      .then((bool)=>{
+        console.log("NAME HERE" +bool);
+        console.log(this.formData);
 
-    this.storage.set(formStuff.preName,this.formData);
-
-    this.storage.get(formStuff.preName).then((val)=>{
-      console.log('Your next reminder is at', val.reminderTime);
-      this.alertMessage("Prescription Added");
-    })
-    .catch((e)=>console.log(e))
-
-    this.router.navigateByUrl('/home');
+        this.formData["status"] = "active";
+        console.log(this.formData);
+    
+        this.storage.set(this.formData.preName,this.formData).then(()=>{
+          this.alertMessage(this.formData.preName+" Added");
+          this.router.navigateByUrl('/home');
+        }).catch((e)=>{
+          console.log(e);
+          this.alertMessage('Failed Entering Prescription');
+          this.router.navigateByUrl('/manual');
+        });
+      }).catch((e)=>{
+        console.log(e);
+        this.alertMessage('Failed Entering Prescription');
+        this.router.navigateByUrl('/manual');
+      })
   }
 
   async alertMessage(text: string)
@@ -43,21 +82,9 @@ export class ManualInputPage implements OnInit {
     });
     toast.present();
   }
-/*
-  addPrescription(){
 
-    var postData = {
-      name: "him",//this.name,
-      time: "1:00",//this.time,
-      quantity: "3"//this.quantity
-    }
-
-    this.httpClient.post<any>('http://localhost:43210/addPrescription', postData)
-      .subscribe(
-        (res)=>console.log(res),
-        (error)=>console.log(error)
-    );
-
+  home(){
+    this.navCtrl.navigateForward("home");
   }
-*/
+
 }

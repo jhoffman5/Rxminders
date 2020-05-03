@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NavController } from '@ionic/angular';
+
 @Component({
   selector: 'app-list',
   templateUrl: 'contacts.page.html',
@@ -20,7 +22,7 @@ export class ContactsPage implements OnInit {
     'build'
   ];
   public items: Array<{ title: string; note: string; icon: string }> = [];
-  constructor() {
+  constructor(public navCtrl: NavController) {
     for (let i = 1; i < 11; i++) {
       this.items.push({
         title: 'Contact ' + i,
@@ -36,4 +38,7 @@ export class ContactsPage implements OnInit {
   // navigate(item) {
   //   this.router.navigate(['/list', JSON.stringify(item)]);
   // }
+  home(){
+    this.navCtrl.navigateForward("home");
+  }
 }

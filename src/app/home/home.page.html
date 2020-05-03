@@ -9,7 +9,7 @@
     </ion-title>
 
     <ion-buttons slot="end">
-      <ion-button [routerLink]="['/', 'home']" color="primary">
+      <ion-button (click)="home()" color="primary">
         <ion-icon slot="icon-only" src="assets/icon1.svg" color="primary"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -34,12 +34,12 @@
           <ion-card-title style="padding-top:10px; padding-left:10px; font-size: medium;" color="light">Upcoming Rxminder</ion-card-title>
         </ion-col>
         <ion-col>
-          <ion-chip style="float: right;" color="light"><ion-datetime displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime></ion-chip>
+          <ion-chip style="float: right;" color="light"><span *ngIf="countActive==0">{{ nextRxminder }}</span><ion-datetime *ngIf="countActive!=0" style="pointer-events: none;" displayFormat="h:mm A" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime></ion-chip>
         </ion-col>
       </ion-row>
     </ion-card-header>
-    <ion-card-content style="padding-top: 10px;">
-      <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.reminderTime == nextRxminder">
+    <ion-card-content style="padding-top: 10px;" *ngIf="nextRxminder!='No Rxminder Set'">
+      <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.reminderTime == nextRxminder && prescription.status == 'active'">
         <ion-chip color="success" style="font-size: medium; max-width: 100%;" (click)="infoPage(prescription)">
         <ion-label color="dark">
           {{ prescription.preName }}
@@ -55,36 +55,87 @@
     </ion-list-header>
     <ion-row>
       <ion-col>
-        <ion-card *ngFor="let prescription of prescriptions;" (click)="infoPage(prescription)">
-          <ion-card-header color="dark">
+
+        <ion-card *ngIf="countActive == 0"color="primary">
+          <ion-card-header color="primary">
             <ion-row>
               <ion-col>
-                <ion-chip color="success" style="font-size: x-large; padding:20px; max-width: 100%;">
-                  <ion-label color="light" style="max-width: 100%;">
-                    {{ prescription.preName }}
-                  </ion-label>
-                </ion-chip>
-              </ion-col>
-              <ion-col>
-                <ion-chip color="light" style="float: right;">
-                  <ion-label style="max-width: 100%;">
-                    <ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+                <ion-chip color="primary" style="font-size: large; padding:20px; max-width: 100%;">
+                  <ion-label color="dark" style="max-width: 100%;">
+                    No Current Prescriptions
                   </ion-label>
                 </ion-chip>
               </ion-col>
             </ion-row>
-
-            <!---<ion-card-title>{{ prescription.preName }}</ion-card-title>
-            <ion-card-subtitle>
-              <ion-list class="ion-no-margin ion-no-padding">
-                <ion-row class="ion-no-margin ion-no-padding">
-                  <pre class="ion-no-margin ion-no-padding"><span class="ion-no-margin ion-no-padding">Rxminder Time: </span></pre>
-                  <ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
-                </ion-row>
-              </ion-list>
-            </ion-card-subtitle>--->
           </ion-card-header>
         </ion-card>
+
+        <span *ngFor="let prescription of prescriptions;">
+          <ion-card *ngIf="prescription.status=='active'" (click)="infoPage(prescription)">
+            <ion-card-header color="dark" *ngIf="prescription.status=='active'">
+              <ion-row>
+                <ion-col>
+                  <ion-chip color="success" style="font-size: large; padding:20px; max-width: 100%;">
+                    <ion-label color="light" style="max-width: 100%;">
+                      {{ prescription.preName }}
+                    </ion-label>
+                  </ion-chip>
+                </ion-col>
+                <ion-col>
+                  <ion-chip color="light" style="float: right;">
+                    <ion-label style="max-width: 100%;">
+                      <ion-datetime style="pointer-events: none;" displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+                    </ion-label>
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+            </ion-card-header>
+          </ion-card>
+        </span>
+      </ion-col>
+    </ion-row>
+
+    <ion-list-header>
+      <ion-label color="dark">Past Prescriptions</ion-label>
+    </ion-list-header>
+    <ion-row>
+      <ion-col>
+        <ion-card *ngIf="countArchived == 0"color="danger">
+          <ion-card-header color="danger">
+            <ion-row>
+              <ion-col>
+                <ion-chip color="danger" style="font-size: large; padding:20px; max-width: 100%;">
+                  <ion-label color="light" style="max-width: 100%;">
+                    No Past Prescriptions
+                  </ion-label>
+                </ion-chip>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+        </ion-card>
+
+        <span *ngFor="let prescription of prescriptions;">
+          <ion-card *ngIf="prescription.status == 'archived';" (click)="infoPage(prescription)">
+            <ion-card-header color="dark">
+              <ion-row>
+                <ion-col>
+                  <ion-chip color="danger" style="font-size: large; padding:20px; max-width: 100%;">
+                    <ion-label color="light" style="max-width: 100%;">
+                      {{ prescription.preName }}
+                    </ion-label>
+                  </ion-chip>
+                </ion-col>
+                <ion-col>
+                  <ion-chip color="light" style="float: right;">
+                    <ion-label style="max-width: 100%;">
+                      <ion-datetime style="pointer-events: none;" displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+                    </ion-label>
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+            </ion-card-header>
+          </ion-card>
+        </span>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -125,23 +176,17 @@
     </ion-row>
   </ion-grid>
   
-
-  <ion-list lines="none" style="padding-bottom: 0px;">
-    <!---<ion-list-header>
-      <ion-label>Resources</ion-label>
-    </ion-list-header>--->
-    <ion-item (click)="devErase()" color="dark">
-      <ion-icon slot="start" color="primary" name="add"></ion-icon>
-      <ion-label>Erase Prescriptions [just for demo]</ion-label>
-    </ion-item><!---
-    <ion-item (click)="scheduleNotification()" color="dark">
-      <ion-icon slot="start" color="primary" name="add"></ion-icon>
-      <ion-label>Schedule Notification</ion-label>
-    </ion-item>--->
-    <ion-item [routerLink]="['/', 'choose-input']" color="dark">
-      <ion-icon slot="start" color="primary" name="add"></ion-icon>
-      <ion-label>Add Prescription</ion-label>
-    </ion-item>
-  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-button color="dark">
+      <ion-icon slot="icon-only" src="assets/ellipsis.svg" color="primary"></ion-icon>
+    </ion-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="dark">
+      </ion-fab-button>
+      <ion-fab-button color="dark" (click)="chooseInputPage()">
+        <ion-icon name="add" color="primary"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 
 </ion-content>

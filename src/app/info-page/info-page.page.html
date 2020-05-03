@@ -9,7 +9,7 @@
     </ion-title>
 
     <ion-buttons slot="end">
-      <ion-button [routerLink]="['/', 'home']" color="primary">
+      <ion-button (click)="home()" color="primary">
         <ion-icon slot="icon-only" src="assets/icon1.svg" color="primary"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -21,13 +21,17 @@
   <ion-card>
     <ion-card-header>
       <ion-card-title>
-        {{ prescription.preName }}
+        Info
       </ion-card-title>
-      <img src="../../assets/pill-bottle.svg" width="100px" height="100px">
+      <!---<img src="../../assets/icon1.svg.svg" width="100px" height="100px">--->
     </ion-card-header>
     <ion-card-content style="padding:0; margin:0;">
       <ion-item color="dark">
-        Rxminder Time:<pre> </pre><ion-datetime displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+        Rxminder Time:<pre> </pre><ion-datetime style="pointer-events: none;" displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+      </ion-item>
+      <hr color="primary" style="padding:0; margin:0;">
+      <ion-item color="dark">
+        Dosage: {{ prescription.dosage }}
       </ion-item>
       <hr color="primary" style="padding:0; margin:0;">
       <ion-item color="dark">
@@ -35,8 +39,34 @@
       </ion-item>
       <hr color="primary" style="padding:0; margin:0;">
       <ion-item color="dark">
+        Notes: {{ prescription.notes }}
+      </ion-item>
+      <hr color="primary" style="padding:0; margin:0;">
+      <ion-item color="dark">
         <a color="dark" (click)="search( prescription.preName )">Search Info</a>
       </ion-item>
     </ion-card-content>
+
   </ion-card>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-button color="dark">
+      <ion-icon slot="icon-only" src="assets/ellipsis.svg" color="primary"></ion-icon>
+    </ion-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="dark">
+      </ion-fab-button>
+      <ion-fab-button color="dark" (click)="deletePopUp( prescription.preName )">
+        <ion-icon name="trash" color="danger"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="dark" (click)="archivePrescription( prescription.preName )" *ngIf="prescription.status=='active'">
+        <ion-icon name="archive"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="dark" (click)="activatePrescription( prescription.preName )" *ngIf="prescription.status=='archived'">
+        <ion-icon name="refresh" color="success"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="dark" (click)="editPrescription( prescription.preName )">
+        <ion-icon name="create" color="primary"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

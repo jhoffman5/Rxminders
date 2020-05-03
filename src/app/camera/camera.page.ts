@@ -8,6 +8,8 @@ import { File } from '@ionic-native/file/ngx';
 
 import { HTTP } from '@ionic-native/http/ngx';
 
+import { NavController } from '@ionic/angular';
+
 @Component({
   selector: 'app-camera',
   templateUrl: './camera.page.html',
@@ -20,7 +22,7 @@ export class CameraPage implements OnInit {
   public drugs: Set <string>;
   public prescriptionsInImg: string[] = [];
 
-  constructor(private camera: Camera, private ocr: OCR, public file: File, public http: HTTP){//, private rx: RxclassApi) { 
+  constructor(public navCtrl: NavController, private camera: Camera, private ocr: OCR, public file: File, public http: HTTP){//, private rx: RxclassApi) { 
 
  }
 
@@ -108,4 +110,9 @@ export class CameraPage implements OnInit {
       });
     })
   }
+  
+  home(){
+    this.navCtrl.navigateForward("home");
+  }
+
 }
