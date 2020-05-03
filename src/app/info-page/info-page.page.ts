@@ -84,6 +84,7 @@ export class InfoPagePage implements OnInit {
 
   editPrescription(preName: String){
     console.log("EDIT: "+preName);
+    this.navCtrl.navigateForward("edit/"+preName);
   }
 
   archivePrescription(preName: string){

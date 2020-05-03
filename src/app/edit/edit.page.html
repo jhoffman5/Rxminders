@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>
+      Edit {{ prescription.preName }}
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="home()" color="primary">
+        <ion-icon slot="icon-only" src="assets/icon1.svg" color="primary"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<!-- ^ header ^ -->
+
+<ion-content>
+
+  <form (ngSubmit)="editForm()">
+    <ion-item>
+      <ion-label>Enter Prescription Name:</ion-label>
+      <ion-input type="text" name="preName" [(ngModel)]="formData.preName" value="{{ prescription.preName }}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Enter Reminder Time:</ion-label>
+      <ion-input type="time" name="reminderTime" [(ngModel)]="formData.reminderTime" value="{{ prescription.reminderTime }}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Enter Dosage:</ion-label>
+      <ion-input type="text" name="dosage" [(ngModel)]="formData.dosage" placeholder="Dosage" value="{{ prescription.dosage }}"></ion-input>
+    </ion-item><!--
+    <ion-item>
+      <ion-label>Enter Quantity:</ion-label>
+      <ion-input type="number" name="quantity" [(ngModel)]="formData.quantity" placeholder="Quantity"></ion-input>
+    </ion-item>
+  -->
+    <ion-item>
+      <ion-label>Add Notes:</ion-label>
+      <ion-input type="text" name="notes" [(ngModel)]="formData.notes" placeholder="Notes" value="{{ prescription.notes}}"></ion-input>
+    </ion-item>
+  </form>
+  <button class="submitButton" color="dark" (click)="editForm()" type="submit">SUBMIT</button>
+  <button class="cancelButton" color="dark" (click)="cancelForm()">CANCEL</button>
+
+</ion-content>

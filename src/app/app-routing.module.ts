@@ -25,7 +25,9 @@ const routes: Routes = [
     loadChildren: './choose-input/choose-input.module#ChooseInputPageModule' 
   },
   { path: 'info-page', loadChildren: './info-page/info-page.module#InfoPagePageModule' },
-  { path: 'info-page/:preName', loadChildren: './info-page/info-page.module#InfoPagePageModule'}
+  { path: 'info-page/:preName', loadChildren: './info-page/info-page.module#InfoPagePageModule'},
+  { path: 'edit', loadChildren: './edit/edit.module#EditPageModule' },
+  { path: 'edit/:preName', loadChildren: './edit/edit.module#EditPageModule' }
 ];
 
 @NgModule({
