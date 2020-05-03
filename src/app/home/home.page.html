@@ -70,20 +70,27 @@
         </ion-card>
 
         <span *ngFor="let prescription of prescriptions;">
-          <ion-card *ngIf="prescription.status=='active'" (click)="infoPage(prescription)">
+          <ion-card *ngIf="prescription.status=='active'">
             <ion-card-header color="dark" *ngIf="prescription.status=='active'">
               <ion-row>
-                <ion-col>
+                <ion-col (click)="infoPage(prescription)">
                   <ion-chip color="success" style="font-size: large; padding:20px; max-width: 100%;">
                     <ion-label color="light" style="max-width: 100%;">
                       {{ prescription.preName }}
                     </ion-label>
                   </ion-chip>
                 </ion-col>
-                <ion-col>
+                <ion-col *ngIf="!deleteToggle.isChecked" (click)="infoPage(prescription)">
                   <ion-chip color="light" style="float: right;">
                     <ion-label style="max-width: 100%;">
                       <ion-datetime style="pointer-events: none;" displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+                    </ion-label>
+                  </ion-chip>
+                </ion-col>
+                <ion-col *ngIf="deleteToggle.isChecked">
+                  <ion-chip color="danger" style="float: right;" (click)="deletePopUp(prescription.preName)">
+                    <ion-label style="max-width: 100%;">
+                      Delete
                     </ion-label>
                   </ion-chip>
                 </ion-col>
@@ -114,20 +121,27 @@
         </ion-card>
 
         <span *ngFor="let prescription of prescriptions;">
-          <ion-card *ngIf="prescription.status == 'archived';" (click)="infoPage(prescription)">
+          <ion-card *ngIf="prescription.status == 'archived';">
             <ion-card-header color="dark">
               <ion-row>
-                <ion-col>
+                <ion-col (click)="infoPage(prescription)">
                   <ion-chip color="danger" style="font-size: large; padding:20px; max-width: 100%;">
                     <ion-label color="light" style="max-width: 100%;">
                       {{ prescription.preName }}
                     </ion-label>
                   </ion-chip>
                 </ion-col>
-                <ion-col>
+                <ion-col *ngIf="!deleteToggle.isChecked" (click)="infoPage(prescription)">
                   <ion-chip color="light" style="float: right;">
                     <ion-label style="max-width: 100%;">
                       <ion-datetime style="pointer-events: none;" displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+                    </ion-label>
+                  </ion-chip>
+                </ion-col>
+                <ion-col *ngIf="deleteToggle.isChecked">
+                  <ion-chip color="danger" style="float: right;" (click)="deletePopUp(prescription.preName)">
+                    <ion-label style="max-width: 100%;">
+                      Delete
                     </ion-label>
                   </ion-chip>
                 </ion-col>
@@ -184,6 +198,12 @@
       </ion-fab-button>
       <ion-fab-button color="dark" (click)="chooseInputPage()">
         <ion-icon name="add" color="primary"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="deleteToggle.isChecked" color="danger" (click)="deleteToggle.isChecked = !deleteToggle.isChecked">
+        <ion-icon name="trash"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="!deleteToggle.isChecked" color="dark" (click)="deleteToggle.isChecked = !deleteToggle.isChecked">
+        <ion-icon name="trash" color="primary"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>

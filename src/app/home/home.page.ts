@@ -20,30 +20,37 @@ export class HomePage {
   public nextRxminder: string;
   public countActive: number;
   public countArchived: number;
+  public deleteToggle = {
+    val: 'Toggle Delete', isCheck:false
+  }
 
 
   constructor(public navCtrl: NavController, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController) {
     this.areRxmindersMade = false;
     this.countActive = 0;
     this.countArchived = 0;
+    this.deleteToggle = {
+      val:'Toggle Delete', isCheck: false
+    };
+
     this.getAllPrescriptions().then( (pres) => {
       this.prescriptions = pres;
-      console.log("in getallprescriptions()");
       this.getRxminder().then( (rxminder) =>{
         this.nextRxminder = rxminder;
-        console.log("IN GETRXMINDER .THEN() nextrxminder="+this.nextRxminder);
         this.scheduleNotification();
       });
     });
   }
 
   public ionViewWillEnter() {
+    this.deleteToggle = {
+      val:'Toggle Delete', isCheck: false
+    };
+
     this.getAllPrescriptions().then( (pres) => {
       this.prescriptions = pres;
-      console.log("in getallprescriptions()");
       this.getRxminder().then( (rxminder) =>{
         this.nextRxminder = rxminder;
-        console.log("IN GETRXMINDER .THEN() nextrxminder="+this.nextRxminder);
         this.scheduleNotification();
       });
     });
@@ -62,7 +69,6 @@ export class HomePage {
         this.areRxmindersMade = true;
         if(value.status=='active'){
           this.countActive++;
-          console.log("RXMINDER MADE");
         } else if(value.status=='archived'){
           this.countArchived++;
         }
@@ -83,18 +89,15 @@ export class HomePage {
       var next: string = "36:01"; // not a possible time
       var earliest: string = "36:01";
       var currentTime = new Date().getHours().toString() +":"+ ((new Date().getMinutes().toString().length<2) ? "0" + new Date().getMinutes().toString() : new Date().getMinutes().toString());
-      //console.log("CURRENT TIME: "+currentTime);
 
       if(this.countActive!=0){
         this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
           if(value["status"]=="active"){
-            console.log(value);
             prescriptions.push(value);
           }
           this.areRxmindersMade = true;
         }).then( res => {
           prescriptions.forEach(element => {
-            //console.log(element);
             if(element.reminderTime > currentTime && element.reminderTime < next)
             {
               next = element.reminderTime;
@@ -113,7 +116,6 @@ export class HomePage {
           resolve(next);
         });
       } else {
-        console.log("COUNT ACTIVE: "+this.countActive);
         resolve("No Rxminder Set");
       }
     })
@@ -121,7 +123,6 @@ export class HomePage {
 
   public scheduleNotification(){
     if(this.countActive!=0){
-      console.log("BEGINNING OF SCHEDULENOTIFICATION()");
       var twelveHRTime = parseInt(this.nextRxminder[0]) * 10 + parseInt(this.nextRxminder[1]);
 
       var reminderHour = twelveHRTime;
@@ -156,14 +157,47 @@ export class HomePage {
         ],
         text: prescriptionText
         //sound: this.plt.is('android')? 'file://sound.mp3': 'file://beep.caf'
-        })
+        });
         console.log("RXMINDER TIME: "+twelveHRString);
         console.log("RXMINDER TEXT: "+prescriptionText);
       }
-
-      console.log("END OF SCHEDULENOTIFICATION()");
   }
 
+  async deletePopUp(preName: String){
+    console.log(preName);
+
+    const alert = await this.alertCtrl.create({
+      header: 'Delete',
+      subHeader: 'Delete '+preName+"?",
+      buttons:[{
+        text:'Confirm',
+        role:'confirm',
+        handler: ()=>{
+          this.delete(preName);
+          this.getAllPrescriptions().then( (pres) => {
+            this.prescriptions = pres;
+            this.getRxminder().then( (rxminder) =>{
+              this.nextRxminder = rxminder;
+              this.scheduleNotification();
+            });
+          });
+        }
+      }, {
+        text: 'Cancel',
+        role:'cancel',
+        handler: ()=>{
+          console.log('Delete Cancelled: '+preName);
+        }
+      }]
+    });
+
+    await alert.present();
+  }
+
+  public delete(prescription: String)
+  {
+    this.storage.remove(prescription.toString());
+  }
 
   public chooseInputPage()
   {
