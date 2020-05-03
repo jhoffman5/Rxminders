@@ -35,10 +35,10 @@ export class ManualInputPage implements OnInit {
           }
           if(this.formData.dosage==""){
             this.formData.dosage="No Dosage Data";
-          }
+          }/*
           if(this.formData.quantity==null){
             this.formData.quantity=0;
-          }
+          }*/
           if(this.formData.notes==""){
             this.formData.notes="No Notes";
           }
