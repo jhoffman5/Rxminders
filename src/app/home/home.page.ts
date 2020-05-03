@@ -16,7 +16,7 @@ export class HomePage {
 
   public prescriptions: any[];
   public time: string = Date();
-  public areRxmindersMade: boolean = false;
+  public areRxmindersMade: boolean;
   public nextRxminder: string;
   public countActive: number;
   public countArchived: number;
@@ -26,92 +26,103 @@ export class HomePage {
     this.areRxmindersMade = false;
     this.countActive = 0;
     this.countArchived = 0;
-    this.allPrescriptions().then( () => this.setNextRxminder() );
-    this.scheduleNotification();
+    this.getAllPrescriptions().then( (pres) => {
+      this.prescriptions = pres;
+      console.log("in getallprescriptions()");
+      this.getRxminder().then( (rxminder) =>{
+        this.nextRxminder = rxminder;
+        console.log("IN GETRXMINDER .THEN() nextrxminder="+this.nextRxminder);
+        this.scheduleNotification();
+      });
+    });
   }
 
-  ionViewWillEnter() {
-   this.allPrescriptions().then( res => this.setNextRxminder() );
-   this.scheduleNotification();
+  public ionViewWillEnter() {
+    this.getAllPrescriptions().then( (pres) => {
+      this.prescriptions = pres;
+      console.log("in getallprescriptions()");
+      this.getRxminder().then( (rxminder) =>{
+        this.nextRxminder = rxminder;
+        console.log("IN GETRXMINDER .THEN() nextrxminder="+this.nextRxminder);
+        this.scheduleNotification();
+      });
+    });
   }
 
-  setNextRxminder(){
-    this.nextRxminder = this.getNextRxminder();
+
+  public getAllPrescriptions(): Promise<Object[]>{
+    return new Promise((resolve) => {
+      let retVal = [];
+      this.areRxmindersMade = false;
+      this.countActive = 0;
+      this.countArchived = 0;
+
+      this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
+        retVal.push(value);
+        this.areRxmindersMade = true;
+        if(value.status=='active'){
+          this.countActive++;
+          console.log("RXMINDER MADE");
+        } else if(value.status=='archived'){
+          this.countArchived++;
+        }
+      })
+        .then(res=>{
+          this.prescriptions = retVal;
+          resolve(retVal);
+        })
+        .catch(e=>{
+          console.log(e);
+        });
+    })
   }
 
-  async allPrescriptions(){
-    let retVal = [];
-    this.areRxmindersMade = false;
-    this.countActive = 0;
-    this.countArchived = 0;
+  public getRxminder(): Promise<string>{
+    return new Promise((resolve) => {
+      var prescriptions = []; 
+      var next: string = "36:01"; // not a possible time
+      var earliest: string = "36:01";
+      var currentTime = new Date().getHours().toString() +":"+ ((new Date().getMinutes().toString().length<2) ? "0" + new Date().getMinutes().toString() : new Date().getMinutes().toString());
+      //console.log("CURRENT TIME: "+currentTime);
 
-    this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
-      retVal.push(value);
-      this.areRxmindersMade = true;
-      if(value.status=='active'){
-        this.countActive++;
-        console.log("RXMINDER MADE");
-      } else if(value.status=='archived'){
-        this.countArchived++;
+      if(this.countActive!=0){
+        this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
+          if(value["status"]=="active"){
+            console.log(value);
+            prescriptions.push(value);
+          }
+          this.areRxmindersMade = true;
+        }).then( res => {
+          prescriptions.forEach(element => {
+            //console.log(element);
+            if(element.reminderTime > currentTime && element.reminderTime < next)
+            {
+              next = element.reminderTime;
+            }
+            if(element.reminderTime < earliest)
+            {
+              earliest = element.reminderTime;
+            }
+          });
+
+          if(next=="36:01")
+          {
+            next = earliest;
+          }
+          console.log("NEXT: "+next);
+          resolve(next);
+        });
+      } else {
+        console.log("COUNT ACTIVE: "+this.countActive);
+        resolve("No Rxminder Set");
       }
     })
-      .then(res=>{
-        this.prescriptions = retVal;
-        this.setNextRxminder();
-      });
-
-    return retVal;
   }
 
-  devErase(){
-    this.storage.clear();
-  }
-
-  getNextRxminder(){
-    var prescriptions = []; 
-    var next: string = "36:01"; // not a possible time
-    var earliest: string = "36:01";
-    var currentTime = new Date().getHours().toString() +":"+ ((new Date().getMinutes().toString().length<2) ? "0" + new Date().getMinutes().toString() : new Date().getMinutes().toString());
-    //console.log("CURRENT TIME: "+currentTime);
-
+  public scheduleNotification(){
     if(this.countActive!=0){
-      this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
-        if(value["status"]=="active"){
-          console.log(value);
-          prescriptions.push(value);
-        }
-        this.areRxmindersMade = true;
-      }).then( res => {
-        prescriptions.forEach(element => {
-          //console.log(element);
-          if(element.reminderTime > currentTime && element.reminderTime < next)
-          {
-            next = element.reminderTime;
-          }
-          if(element.reminderTime < earliest)
-          {
-            earliest = element.reminderTime;
-          }
-        });
-
-        if(next=="36:01")
-        {
-          next = earliest;
-        }
-        console.log("NEXT: "+next);
-        this.nextRxminder = next;
-      });
-    } else {
-      console.log("COUNT ACTIVE: "+this.countActive);
-      return "No Rxminder Set";
-    }
-    return next;
-  }
-
-  scheduleNotification(){
-    if(this.areRxmindersMade){
+      console.log("BEGINNING OF SCHEDULENOTIFICATION()");
       var twelveHRTime = parseInt(this.nextRxminder[0]) * 10 + parseInt(this.nextRxminder[1]);
-      //alert(twelveHRTime);
 
       var reminderHour = twelveHRTime;
       var reminderMinute = this.nextRxminder[3].toString()+this.nextRxminder[4].toString();
@@ -124,7 +135,7 @@ export class HomePage {
 
       var preList = '';
       this.prescriptions.forEach(element => {
-        if(element.reminderTime == this.nextRxminder){
+        if(element.reminderTime == this.nextRxminder && element.status =='active'){
           preList += element.preName + ", ";  //add dosages
         }  
       });
@@ -146,8 +157,11 @@ export class HomePage {
         text: prescriptionText
         //sound: this.plt.is('android')? 'file://sound.mp3': 'file://beep.caf'
         })
+        console.log("RXMINDER TIME: "+twelveHRString);
+        console.log("RXMINDER TEXT: "+prescriptionText);
       }
 
+      console.log("END OF SCHEDULENOTIFICATION()");
   }
 
 
@@ -161,7 +175,7 @@ export class HomePage {
     this.navCtrl.navigateForward("info-page/"+prescription.preName);
   }
   
-  home(){
+  public home(){
     this.navCtrl.navigateForward("home");
   }
 
