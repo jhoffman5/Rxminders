@@ -24,6 +24,10 @@ export class HomePage {
     val: 'Toggle Delete', isCheck:false
   }
 
+  public archiveToggle = {
+    val: 'Toggle Archive', isCheck:false
+  }
+
 
   constructor(public navCtrl: NavController, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController) {
     this.areRxmindersMade = false;
@@ -31,6 +35,9 @@ export class HomePage {
     this.countArchived = 0;
     this.deleteToggle = {
       val:'Toggle Delete', isCheck: false
+    };
+    this.archiveToggle = {
+      val: 'Toggle Archive', isCheck:false
     };
 
     this.getAllPrescriptions().then( (pres) => {
@@ -45,6 +52,9 @@ export class HomePage {
   public ionViewWillEnter() {
     this.deleteToggle = {
       val:'Toggle Delete', isCheck: false
+    };
+    this.archiveToggle = {
+      val: 'Toggle Archive', isCheck:false
     };
 
     this.getAllPrescriptions().then( (pres) => {
@@ -192,6 +202,21 @@ export class HomePage {
     });
 
     await alert.present();
+  }
+
+  public toggleDelete()
+  {
+    if(this.archiveToggle.isCheck != true){
+      this.deleteToggle.isCheck = !this.deleteToggle.isCheck;
+    }
+  }
+
+  public toggleArchive()
+  {
+    //if(this.deleteToggle.isCheck != true){
+    //  this.archiveToggle.isCheck = !this.archiveToggle.isCheck;
+    //}
+    console.log(this.archiveToggle.isCheck);
   }
 
   public delete(prescription: String)

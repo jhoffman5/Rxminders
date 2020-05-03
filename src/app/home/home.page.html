@@ -199,11 +199,17 @@
       <ion-fab-button color="dark" (click)="chooseInputPage()">
         <ion-icon name="add" color="primary"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="deleteToggle.isChecked" color="danger" (click)="deleteToggle.isChecked = !deleteToggle.isChecked">
+      <ion-fab-button *ngIf="deleteToggle.isChecked" color="danger" (click)="archiveToggle.isChecked ? (deleteToggle.isChecked = false) : (deleteToggle.isChecked = !deleteToggle.isChecked)">
         <ion-icon name="trash"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="!deleteToggle.isChecked" color="dark" (click)="deleteToggle.isChecked = !deleteToggle.isChecked">
+      <ion-fab-button *ngIf="!deleteToggle.isChecked" color="dark" (click)="archiveToggle.isChecked ? (deleteToggle.isChecked = false) : (deleteToggle.isChecked = !deleteToggle.isChecked)">
         <ion-icon name="trash" color="primary"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="archiveToggle.isChecked" color="danger" (click)="deleteToggle.isChecked ? (archiveToggle.isChecked = false) : (archiveToggle.isChecked = !archiveToggle.isChecked)">
+        <ion-icon name="archive"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="!archiveToggle.isChecked" color="dark" (click)="deleteToggle.isChecked ? (archiveToggle.isChecked = false) : (archiveToggle.isChecked = !archiveToggle.isChecked)">
+        <ion-icon name="archive" color="primary"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
