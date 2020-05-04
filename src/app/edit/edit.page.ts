@@ -19,11 +19,11 @@ export class EditPage implements OnInit {
 
   public prescription;
   public param; 
-  public formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:""};
+  public formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
 
   constructor(public navCtrl: NavController, public toastController:ToastController, private route: ActivatedRoute, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController, private iab: InAppBrowser) {
     this.param = this.route.snapshot.paramMap.get('preName').toString();
-    this.formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:""};
+    this.formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
 
     console.log(this.param);
     this.update();
@@ -50,6 +50,8 @@ export class EditPage implements OnInit {
   editForm(){
     this.storage.get(this.param)
       .then((res)=>{
+        this.formData["countMissed"] = res.countMissed;
+        this.formData["countCompleted"] = res.countCompleted;
         this.formData["status"] = res.status;
         this.storage.remove(this.param)
           .then(()=>{

@@ -3,9 +3,12 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { AlertController } from  '@ionic/angular';
 
+import { ToastController } from '@ionic/angular';
+
 import { Storage } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { NavController } from '@ionic/angular';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-home',
@@ -28,14 +31,18 @@ export class HomePage {
     val: 'Toggle Archive', isCheck:false
   }
 
+  public lastNotificationClick: Date;
 
-  constructor(public navCtrl: NavController, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController) {
+
+  constructor(public navCtrl: NavController, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController, public toastController:ToastController) {
     this.deleteToggle = {
       val:'Toggle Delete', isCheck: false
     };
     this.archiveToggle = {
       val: 'Toggle Archive', isCheck:false
     };
+
+    this.lastNotificationClick = new Date(0);
 
     this.getAllPrescriptions().then( (pres) => {
       this.prescriptions = pres;
@@ -142,32 +149,89 @@ export class HomePage {
       var twelveHRString = twelveHRTime.toString()+':'+this.nextRxminder[3]+this.nextRxminder[4]+' '+AMorPM;
 
       var preList = '';
+      var notificationList = [];
       this.prescriptions.forEach(element => {
         if(element.reminderTime == this.nextRxminder && element.status =='active'){
           preList += element.preName + ", ";  //add dosages
+          notificationList += element;
         }  
       });
 
       preList = preList.slice(0,preList.length-2); //erase last comma
 
       let prescriptionText = 'Time to take: ' + preList;
-
-      this.localNotifications.schedule({
+      let notification = {
         id: 1,
-        title: 'It\'s '+twelveHRString+'!',
-        trigger: {every: {hour:reminderHour, minute: parseInt(reminderMinute)}, count:1},//{ at: new Date(new Date().getTime() + 3600) },
-        data: { myData: 'hidden Message' },
+        title: 'It\'s '+twelveHRString+'!' + notificationList.toString(),
+        trigger: /*{every: {hour:reminderHour, minute: parseInt(reminderMinute)}, count:1},*/{ at: new Date(new Date().getTime() + 3600) },
+        data: { myData: 'hidden Message', notList: notificationList },
         icon: 'src//assets//icon//bottle.png',
         actions: [
-          { id: 'taken', title: 'Confirm' },
-          { id: 'missed',  title: 'Skip' }
+          { id: 'taken', title: 'Confirm', launch: true },
+          { id: 'missed',  title: 'Skip', launch: true }
         ],
         text: prescriptionText
         //sound: this.plt.is('android')? 'file://sound.mp3': 'file://beep.caf'
+      };
+
+      this.localNotifications.on('click').subscribe(async ()=>{
+        const toast = await this.toastController.create({
+          message: "CLICK",
+          duration: 3000
         });
+        toast.present();
+      });
+
+      this.localNotifications.on('missed').subscribe(async notification => {
+        this.localNotifications.clearAll();
+        this.prescriptions.forEach(element => {
+          if(element.reminderTime == this.nextRxminder && element.status =='active' && (new Date().getTime() - this.lastNotificationClick.getTime()) > 1000 ){
+
+            this.storage.get(element.preName)
+              .then((res)=>{
+                res.countMissed = res.countMissed+1;
+
+                this.storage.remove(element.preName)
+                  .then(()=>{
+                    this.storage.set(res.preName,res)
+                  });
+            });
+          }
+        });
+      });
+
+      this.localNotifications.on('taken').subscribe(async notification => {
+        this.localNotifications.clearAll();
+        this.prescriptions.forEach(element => {
+          if(element.reminderTime == this.nextRxminder && element.status =='active' && (new Date().getTime() - this.lastNotificationClick.getTime()) > 1000 ){
+
+            this.storage.get(element.preName)
+              .then((res)=>{
+                res.countCompleted = res.countCompleted +1;
+
+                this.storage.remove(element.preName)
+                  .then(()=>{
+                    this.storage.set(res.preName,res)
+                  });
+            });
+          }
+        });
+      });
+
+      this.localNotifications.cancelAll().then(()=>{
+        this.localNotifications.schedule(notification);
         console.log("RXMINDER TIME: "+twelveHRString);
         console.log("RXMINDER TEXT: "+prescriptionText);
-      }
+      });
+    }
+  }
+
+  public async addMissed(preName: string)
+  {
+    this.storage.get(preName).then(prescription=>{
+      prescription.countMissed = prescription.countMissed+1;
+      this.storage.set(preName,prescription);
+    })
   }
 
   async deletePopUp(preName: string){

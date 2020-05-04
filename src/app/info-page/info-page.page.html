@@ -43,6 +43,12 @@
       <ion-item color="dark">
         Notes: {{ prescription.notes }}
       </ion-item>
+      <ion-item color="dark">
+        On Time: {{ prescription.countCompleted }}
+      </ion-item>
+      <ion-item color="dark">
+        Missed: {{ prescription.countMissed }}
+      </ion-item>
       <hr color="primary" style="padding:0; margin:0;">
       <ion-item color="dark">
         <a color="dark" (click)="search( prescription.preName )">Search Info</a>

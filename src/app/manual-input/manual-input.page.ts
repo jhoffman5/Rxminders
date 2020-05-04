@@ -14,10 +14,10 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./manual-input.page.scss']
 })
 export class ManualInputPage implements OnInit {
-  formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:""};
+  formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
 
   constructor(public navCtrl: NavController, private storage: Storage, private router:Router, public toastController:ToastController){
-    this.formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:""};
+    this.formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:"", countCompleted: 0, countMissed: 0};
   }
 
   ngOnInit() {
