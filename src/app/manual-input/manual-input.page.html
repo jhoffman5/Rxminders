@@ -23,10 +23,19 @@
       <ion-label>Enter Prescription Name:</ion-label>
       <ion-input type="text" name="preName" [(ngModel)]="formData.preName" placeholder="Prescription Name"></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label>Enter Reminder Time:</ion-label>
-      <ion-input type="time" name="reminderTime" [(ngModel)]="formData.reminderTime"></ion-input>
+    <ion-item color="dark">
+      Number of Rxminders: {{ numOfRxminders }}
+      <span slot="end" style="width: 30%; float: right;">
+        <ion-button (click)="upNumMap()" color="success" style="float: right;">+</ion-button>
+        <ion-button (click)="downNumMap()" color="danger" style="float: right">-</ion-button>
+      </span>
     </ion-item>
+    <span *ngFor="let number of numMap">
+      <ion-item>
+          <ion-label>Enter Reminder Time:</ion-label>
+          <ion-input type="time" name="reminderTime" [(ngModel)]="formData.reminderTime[number]"></ion-input>
+      </ion-item>
+    </span>
     <ion-item>
       <ion-label>Enter Dosage:</ion-label>
       <ion-input type="text" name="dosage" [(ngModel)]="formData.dosage" placeholder="Dosage"></ion-input>

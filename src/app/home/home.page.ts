@@ -78,13 +78,16 @@ export class HomePage {
       this.countArchived = 0;
 
       this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
-        retVal.push(value);
-        this.areRxmindersMade = true;
-        if(value.status=='active'){
-          this.countActive++;
-        } else if(value.status=='archived'){
-          this.countArchived++;
-        }
+        this.getPrescriptionsNextRxminder(value.preName).then((pre:any)=>{
+          retVal.push(pre);
+          this.areRxmindersMade = true;
+          if(pre.status=='active'){
+            this.countActive++;
+          } else if(pre.status=='archived'){
+            this.countArchived++;
+          }
+          console.log(pre.next+"ASDFADSAFs");
+        });
       })
         .then(res=>{
           this.prescriptions = retVal;
@@ -111,14 +114,16 @@ export class HomePage {
           this.areRxmindersMade = true;
         }).then( res => {
           prescriptions.forEach(element => {
-            if(element.reminderTime > currentTime && element.reminderTime < next)
-            {
-              next = element.reminderTime;
-            }
-            if(element.reminderTime < earliest)
-            {
-              earliest = element.reminderTime;
-            }
+            element.reminderTime.forEach(rxminder => {
+              if(rxminder > currentTime && rxminder < next)
+              {
+                next = rxminder;
+              }
+              if(rxminder < earliest)
+              {
+                earliest = rxminder;
+              }
+            });
           });
 
           if(next=="36:01")
@@ -354,6 +359,36 @@ export class HomePage {
             });
           });
       });
+  }
+
+  public async getPrescriptionsNextRxminder(preName:string): Promise<Object>
+  {
+    return new Promise<Object>((resolve)=>{
+      var next: string = "36:01"; // not a possible time
+      var earliest: string = "36:01";
+      var currentTime = new Date().getHours().toString() +":"+ ((new Date().getMinutes().toString().length<2) ? "0" + new Date().getMinutes().toString() : new Date().getMinutes().toString());
+  
+      this.storage.get(preName)
+        .then(prescription=>{
+          for (let index = 0; index < prescription["reminderTime"].length; index++) {
+            if(prescription["reminderTime"][index] > currentTime && prescription["reminderTime"][index] < next)
+            {
+              next = prescription["reminderTime"][index];
+            }
+            if(prescription["reminderTime"][index] < earliest)
+            {
+              earliest = prescription["reminderTime"][index];
+            }
+          }
+          if(next == "36:01")
+          {
+            next = earliest;
+          }
+          console.log(prescription.preName+" "+next);
+          prescription["next"] = next;
+          resolve(prescription);
+      });
+    });
   }
 
   public chooseInputPage()

@@ -14,10 +14,17 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./manual-input.page.scss']
 })
 export class ManualInputPage implements OnInit {
-  formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
+  formData = {preName:"", reminderTime: [], quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
+  public numOfRxminders;
+  public numMap;
 
   constructor(public navCtrl: NavController, private storage: Storage, private router:Router, public toastController:ToastController){
-    this.formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:"", countCompleted: 0, countMissed: 0};
+    this.formData = {preName:"", reminderTime: [], quantity: null, dosage:"", notes:"", countCompleted: 0, countMissed: 0};
+    this.numOfRxminders = 1;
+    this.numMap = [];
+    for(let i = 0; i < this.numOfRxminders; i++){
+      this.numMap.push(i);
+    }
   }
 
   ngOnInit() {
@@ -30,8 +37,8 @@ export class ManualInputPage implements OnInit {
           if(this.formData.preName==""){
             this.formData.preName = "Prescription "+num;
           }
-          if(this.formData.reminderTime==""){
-            this.formData.reminderTime ="00:00";
+          if(this.formData.reminderTime[0]==""){
+            this.formData.reminderTime =["00:00"];
           }
           if(this.formData.dosage==""){
             this.formData.dosage="No Dosage Data";
@@ -81,6 +88,24 @@ export class ManualInputPage implements OnInit {
       duration: 3000
     });
     toast.present();
+  }
+
+  public upNumMap()
+  {
+    this.numOfRxminders++;
+    this.numMap = [];
+    for(let i = 0; i < this.numOfRxminders; i++){
+      this.numMap.push(i);
+    }
+  }
+
+  public downNumMap()
+  {
+    this.numOfRxminders--;
+    this.numMap = [];
+    for(let i = 0; i < this.numOfRxminders; i++){
+      this.numMap.push(i);
+    }
   }
 
   home(){

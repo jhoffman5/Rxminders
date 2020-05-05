@@ -18,18 +18,32 @@
 <!-- ^ header ^ -->
 
 <ion-content>
-  <ion-card>
+  <ion-card color="dark">
+    <ion-card-header>
+      <ion-card-title>
+        Rxminder Time(s):
+      </ion-card-title>
+    </ion-card-header>
+    <hr color="primary" style="padding:0; margin:0;">
+    <ion-card-content>
+      <span *ngFor="let time of prescription.reminderTime" style="margin: 0; padding: 0; max-width: 50%;">
+        <ion-chip color="light" style="float: right;">
+          <ion-label style="max-width: 100%;">
+            <ion-datetime style="pointer-events: none;" displayFormat="h:mm A" value= "{{ time }}" class="ion-no-margin ion-no-padding"></ion-datetime>
+          </ion-label>
+        </ion-chip>
+      </span>
+    </ion-card-content>
+  </ion-card>
+  <ion-card color="dark">
     <ion-card-header>
       <ion-card-title>
         Info
       </ion-card-title>
       <!---<img src="../../assets/icon1.svg.svg" width="100px" height="100px">--->
     </ion-card-header>
+    <hr color="primary" style="padding:0; margin:0;">
     <ion-card-content style="padding:0; margin:0;">
-      <ion-item color="dark">
-        Rxminder Time:<pre> </pre><ion-datetime style="pointer-events: none;" displayFormat="h:mm A" value= "{{ prescription.reminderTime }}" class="ion-no-margin ion-no-padding"></ion-datetime>
-      </ion-item>
-      <hr color="primary" style="padding:0; margin:0;">
       <ion-item color="dark">
         Dosage: {{ prescription.dosage }}
       </ion-item>
@@ -49,15 +63,16 @@
       </ion-item>
     </ion-card-content>
   </ion-card>
-  <ion-card>
+  <ion-card color="dark">
     <ion-card-header>
       <ion-card-title>
         Progress
       </ion-card-title>
     </ion-card-header>
+    <hr color="primary" style="padding:0; margin:0;">
     <ion-card-content color="dark" style="padding:0; margin:0;">
       <ion-item color="dark" style="max-width: 100%; padding:0; margin:0;">
-        You have taken {{ prescription.countCompleted }} out of {{ prescription.countCompleted + prescription.countMissed }} for {{ prescription.preName }}
+        You have taken {{ prescription.countCompleted }} out of {{ prescription.countCompleted + prescription.countMissed }} {{ prescription.preName }}s on time
       </ion-item>
       <ion-item color="dark" style="max-width: 100%; padding:0; margin:0;">
         <ion-progress-bar color="primary" value="{{ progress }}" style="--buffer-background: #f04141; padding:0; margin:0;"></ion-progress-bar>
