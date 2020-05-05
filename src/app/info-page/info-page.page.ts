@@ -19,11 +19,14 @@ export class InfoPagePage implements OnInit {
 
   public prescription;
   public param;
+  public progress;
 
   constructor(public navCtrl: NavController, public toastController:ToastController, private route: ActivatedRoute, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController, private iab: InAppBrowser) {
     this.param = this.route.snapshot.paramMap.get('preName').toString();
+    this.progress = 0.0;
     console.log(this.param);
     this.updateInfo();
+
     //.then((data)=>{this.prescription=this.getPrescription(this.param)});
   }
 
@@ -42,6 +45,7 @@ export class InfoPagePage implements OnInit {
   getPrescription(){
     var retVal = this.storage.get(this.param).then(res=>{
       this.prescription = res;
+      this.progress = res.countCompleted / (res.countCompleted + res.countMissed);
     });
     console.log(this.prescription);
     //this.prescription = retVal;

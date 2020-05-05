@@ -10,6 +10,8 @@ import { HTTP } from '@ionic-native/http/ngx';
 
 import { NavController } from '@ionic/angular';
 
+import { ToastController } from '@ionic/angular';
+
 @Component({
   selector: 'app-camera',
   templateUrl: './camera.page.html',
@@ -19,10 +21,11 @@ export class CameraPage implements OnInit {
 
   currentImage: any;
   public words: any;
+  public notes: string;
   public drugs: Set <string>;
   public prescriptionsInImg: string[] = [];
 
-  constructor(public navCtrl: NavController, private camera: Camera, private ocr: OCR, public file: File, public http: HTTP){//, private rx: RxclassApi) { 
+  constructor(public navCtrl: NavController, private camera: Camera, private ocr: OCR, public file: File, public http: HTTP, public toastController: ToastController){ 
 
  }
 
@@ -49,8 +52,18 @@ export class CameraPage implements OnInit {
       .then((recognizedText) => {
         console.log(recognizedText);
         alert(JSON.stringify(recognizedText));
+
         //this.words = recognizedText.words.wordtext;
-        this.cleanText(recognizedText.words.wordtext);
+        this.words = this.cleanText(recognizedText.words.wordtext);
+        this.checkInFDAServer()
+          .then(res => {
+            this.words = res;
+            this.notes = this.getNotes(recognizedText.blocks.blocktext);
+          })
+          .catch(rej => {
+            console.log(rej);
+            alert('No prescription names found')
+          })
       }, (err) =>{
         alert('Error recognizing text: ' + err);
       })
@@ -58,18 +71,18 @@ export class CameraPage implements OnInit {
       alert("Camera issue:" + err)
       console.log("Camera issue:" + err);
     });
-
-    //this.words = ["notap","asjkdfkla","ajlsdlnfkjabsdf","glycerin"];
+/*
+    this.words = ["notap","asjkdfkla","ajlsdlnfkjabsdf","glycerin"];
 
     this.checkInFDAServer()
-      .then(res=>{
+      .then(async res=>{
         console.log(`promise result: ${res}`);
         //send res and qty to form
         this.words = res;
       })
       .catch(rej=>{
         console.log(rej);
-      });
+      }); */
   }
 
   cleanText(words: string[]){
@@ -86,7 +99,7 @@ export class CameraPage implements OnInit {
         //set 'var qty' to words[i+1]
       }
     }
-    this.words = words;
+    return words
   }
 
   checkInFDAServer(): Promise<string> {
@@ -97,7 +110,7 @@ export class CameraPage implements OnInit {
       this.words.forEach(element => {
         this.http.get('http://rxnav.nlm.nih.gov/REST/rxclass/class/byDrugName.json/?drugName='+element,{},{})
           .then(data => {
-            if(JSON.stringify(JSON.parse(data.data).rxclassDrugInfoList) != undefined){
+            if(JSON.stringify(JSON.parse(data.data).rxclassDrugInfoList) != undefined && element!="as"){
               word = element;
               resolve(element);
             }
@@ -111,6 +124,19 @@ export class CameraPage implements OnInit {
     })
   }
   
+  getNotes(blockText: string[]){
+    var notes: string = "";
+    blockText = this.cleanText(blockText);
+    blockText.forEach(element => {
+      for(let i = 0; i < element.length-3; i++){
+        if((element[i]=='t'||element[i]=='T')&&(element[i+1]=='a'||element[i+1]=='A')&&(element[i+2]=='k'||element[i+2]=='k')&&(element[i+3]=='e'||element[i+3]=='e')){
+          notes+=element;
+        }
+      }
+    });
+    return notes;
+  }
+
   home(){
     this.navCtrl.navigateForward("home");
   }

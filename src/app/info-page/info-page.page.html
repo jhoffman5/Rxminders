@@ -43,19 +43,51 @@
       <ion-item color="dark">
         Notes: {{ prescription.notes }}
       </ion-item>
-      <ion-item color="dark">
-        On Time: {{ prescription.countCompleted }}
-      </ion-item>
-      <ion-item color="dark">
-        Missed: {{ prescription.countMissed }}
-      </ion-item>
       <hr color="primary" style="padding:0; margin:0;">
       <ion-item color="dark">
         <a color="dark" (click)="search( prescription.preName )">Search Info</a>
       </ion-item>
     </ion-card-content>
-
   </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Progress
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content color="dark" style="padding:0; margin:0;">
+      <ion-item color="dark" style="max-width: 100%; padding:0; margin:0;">
+        You have taken {{ prescription.countCompleted }} out of {{ prescription.countCompleted + prescription.countMissed }} for {{ prescription.preName }}
+      </ion-item>
+      <ion-item color="dark" style="max-width: 100%; padding:0; margin:0;">
+        <ion-progress-bar color="primary" value="{{ progress }}" style="--buffer-background: #f04141; padding:0; margin:0;"></ion-progress-bar>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!---<ion-item style="height:fit-content">--->
+    <span style="width:50%; float:left;" >    
+      <ion-chip color="dark" style="float: right;" (click)="editPrescription( prescription.preName )">
+        <ion-label color="primary">Edit</ion-label><ion-icon name="create" color="primary"></ion-icon>
+      </ion-chip>
+    </span>
+    <span style="width:50%; float: right;">
+      <ion-chip color="danger" style="float: left;" (click)="archivePrescription( prescription.preName )" *ngIf="prescription.status=='active'">
+        <ion-label style="max-width: 100%;">
+          <ion-label>Archive </ion-label><ion-icon name="archive"></ion-icon>
+        </ion-label>
+      </ion-chip>
+      <ion-chip color="success" style="float: left;" (click)="activatePrescription( prescription.preName )" *ngIf="prescription.status=='archived'">
+        <ion-label style="max-width: 100%;">
+          <ion-label>Renew </ion-label><ion-icon name="refresh" color="success"></ion-icon>
+        </ion-label>
+      </ion-chip>
+    </span>
+  <!--/ion-item-->
+
+
+  
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-button color="dark">
       <ion-icon slot="icon-only" src="assets/ellipsis.svg" color="primary"></ion-icon>
@@ -66,14 +98,18 @@
       <ion-fab-button color="dark" (click)="deletePopUp( prescription.preName )">
         <ion-icon name="trash" color="danger"></ion-icon>
       </ion-fab-button>
+      <!--
       <ion-fab-button color="dark" (click)="archivePrescription( prescription.preName )" *ngIf="prescription.status=='active'">
         <ion-icon name="archive"></ion-icon>
       </ion-fab-button>
       <ion-fab-button color="dark" (click)="activatePrescription( prescription.preName )" *ngIf="prescription.status=='archived'">
         <ion-icon name="refresh" color="success"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button color="dark" (click)="editPrescription( prescription.preName )">
+      </ion-fab-button>-->
+      <!--ion-fab-button color="dark" (click)="editPrescription( prescription.preName )">
         <ion-icon name="create" color="primary"></ion-icon>
+      </ion-fab-button>-->
+      <ion-fab-button color="dark" (click)="search( prescription.preName )">
+        <ion-icon name="information-circle"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>

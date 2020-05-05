@@ -8,7 +8,6 @@ import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { NavController } from '@ionic/angular';
-import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-home',
@@ -162,10 +161,9 @@ export class HomePage {
       let prescriptionText = 'Time to take: ' + preList;
       let notification = {
         id: 1,
-        title: 'It\'s '+twelveHRString+'!' + notificationList.toString(),
+        title: 'It\'s '+twelveHRString+'!',
         trigger: /*{every: {hour:reminderHour, minute: parseInt(reminderMinute)}, count:1},*/{ at: new Date(new Date().getTime() + 3600) },
         data: { myData: 'hidden Message', notList: notificationList },
-        icon: 'src//assets//icon//bottle.png',
         actions: [
           { id: 'taken', title: 'Confirm', launch: true },
           { id: 'missed',  title: 'Skip', launch: true }
