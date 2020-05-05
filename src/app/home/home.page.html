@@ -28,7 +28,7 @@
           <ion-card-title style="padding-top:10px; padding-left:10px; font-size: medium;" color="light">Upcoming Rxminder</ion-card-title>
         </ion-col>
         <ion-col>
-          <ion-chip style="float: right;" color="light"><span *ngIf="countActive==0">{{ nextRxminder }}</span><ion-datetime *ngIf="countActive!=0" style="pointer-events: none;" displayFormat="h:mm A" [(ngModel)]="nextRxminder" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime></ion-chip>
+          <ion-chip style="float: right;" color="light"><span *ngIf="countActive==0">{{ nextRxminder }}</span><ion-datetime *ngIf="areRxmindersMade" style="pointer-events: none;" displayFormat="h:mm A" [(ngModel)]="nextRxminder" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime></ion-chip>
         </ion-col>
       </ion-row>
     </ion-card-header>

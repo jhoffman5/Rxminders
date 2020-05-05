@@ -113,6 +113,10 @@ export class HomePage {
         }).then( res => {
           prescriptions.forEach(element => {
             element.reminderTime.forEach(rxminder => {
+              if(currentTime.charAt(0) != '0' ){
+                currentTime = '0'+currentTime;
+              }
+
               if(rxminder > currentTime && rxminder < next)
               {
                 next = rxminder;
@@ -126,7 +130,7 @@ export class HomePage {
 
           if(next=="36:01")
           {
-            next = earliest;
+            //next = earliest;
           }
           console.log("NEXT: "+next);
           resolve(next);
@@ -366,7 +370,10 @@ export class HomePage {
       var next: string = "36:01"; // not a possible time
       var earliest: string = "36:01";
       var currentTime = new Date().getHours().toString() +":"+ ((new Date().getMinutes().toString().length<2) ? "0" + new Date().getMinutes().toString() : new Date().getMinutes().toString());
-  
+      if(currentTime.charAt(0) != '0' ){
+        currentTime = '0'+currentTime;
+      }
+      
       this.storage.get(preName)
         .then(prescription=>{
           for (let index = 0; index < prescription["reminderTime"].length; index++) {
