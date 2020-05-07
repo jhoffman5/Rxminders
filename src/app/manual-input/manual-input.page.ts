@@ -37,15 +37,12 @@ export class ManualInputPage implements OnInit {
           if(this.formData.preName==""){
             this.formData.preName = "Prescription "+num;
           }
-          if(this.formData.reminderTime[0]==""){
-            this.formData.reminderTime =["00:00"];
+          if(this.formData.reminderTime.length==0){
+            this.formData.reminderTime = ["12:00"];
           }
           if(this.formData.dosage==""){
             this.formData.dosage="No Dosage Data";
-          }/*
-          if(this.formData.quantity==null){
-            this.formData.quantity=0;
-          }*/
+          }
           if(this.formData.notes==""){
             this.formData.notes="No Notes";
           }

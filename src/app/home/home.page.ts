@@ -98,138 +98,123 @@ export class HomePage {
   }
 
   public getRxminder(): Promise<string>{
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
       var prescriptions = []; 
       var next: string = "36:01"; // not a possible time
       var earliest: string = "36:01";
       var currentTime = new Date().getHours().toString() +":"+ ((new Date().getMinutes().toString().length<2) ? "0" + new Date().getMinutes().toString() : new Date().getMinutes().toString());
 
-      if(this.countActive!=0){
-        this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
-          if(value["status"]=="active"){
-            prescriptions.push(value);
+      await this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
+        if(value["status"]=="active"){
+          prescriptions.push(value);
+        }
+        this.areRxmindersMade = true;
+      });
+      
+      prescriptions.forEach(element => {
+        element.reminderTime.forEach(rxminder => {
+          if(currentTime.charAt(0) != '0' ){
+            currentTime = '0'+currentTime;
           }
-          this.areRxmindersMade = true;
-        }).then( res => {
-          prescriptions.forEach(element => {
-            element.reminderTime.forEach(rxminder => {
-              if(currentTime.charAt(0) != '0' ){
-                currentTime = '0'+currentTime;
-              }
 
-              if(rxminder > currentTime && rxminder < next)
-              {
-                next = rxminder;
-              }
-              if(rxminder < earliest)
-              {
-                earliest = rxminder;
-              }
-            });
-          });
-
-          if(next=="36:01")
+          if(rxminder > currentTime && rxminder < next)
           {
-            //next = earliest;
+            next = rxminder;
           }
-          console.log("NEXT: "+next);
-          resolve(next);
+          if(rxminder < earliest)
+          {
+            earliest = rxminder;
+          }
         });
-      } else {
-        console.log("NEXT: No Rxminder Set");
-        resolve("No Rxminder Set");
+      });
+
+      if(next=="36:01")
+      {
+        next = earliest;
       }
-    })
+      console.log("NEXT: "+next);
+      resolve(next);
+    });
   }
 
   public scheduleNotification(){
-    if(this.countActive!=0){
-      var twelveHRTime = parseInt(this.nextRxminder[0]) * 10 + parseInt(this.nextRxminder[1]);
+    var twelveHRTime = parseInt(this.nextRxminder[0]) * 10 + parseInt(this.nextRxminder[1]);
 
-      var reminderHour = twelveHRTime;
-      var reminderMinute = this.nextRxminder[3].toString()+this.nextRxminder[4].toString();
+    var reminderHour = twelveHRTime;
+    var reminderMinute = this.nextRxminder[3].toString()+this.nextRxminder[4].toString();
 
-      var AMorPM = ((twelveHRTime < 12) ? 'AM' : 'PM');
-      twelveHRTime = twelveHRTime % 12;
-      twelveHRTime = (twelveHRTime == 0) ? 12 : twelveHRTime; 
+    var AMorPM = ((twelveHRTime < 12) ? 'AM' : 'PM');
+    twelveHRTime = twelveHRTime % 12;
+    twelveHRTime = (twelveHRTime == 0) ? 12 : twelveHRTime; 
 
-      var twelveHRString = twelveHRTime.toString()+':'+this.nextRxminder[3]+this.nextRxminder[4]+' '+AMorPM;
+    var twelveHRString = twelveHRTime.toString()+':'+this.nextRxminder[3]+this.nextRxminder[4]+' '+AMorPM;
 
-      var preList = '';
-      var notificationList = [];
+    var preList = '';
+    var notificationList = [];
+    this.prescriptions.forEach(element => {
+      if(element.reminderTime == this.nextRxminder && element.status =='active'){
+        preList += element.preName + ", ";  //add dosages
+        notificationList += element;
+      }  
+    });
+
+    preList = preList.slice(0,preList.length-2); //erase last comma
+
+    let prescriptionText = 'Time to take: ' + preList;
+    let notification = {
+      id: 1,
+      title: 'It\'s '+twelveHRString+'!',
+      trigger: /*{every: {hour:reminderHour, minute: parseInt(reminderMinute)}, count:1},*/{ at: new Date(new Date().getTime() + 3600) },
+      data: { myData: 'hidden Message', notList: notificationList },
+      actions: [
+        { id: 'taken', title: 'Confirm', launch: true },
+        { id: 'missed',  title: 'Skip', launch: true }
+      ],
+      text: prescriptionText
+      //sound: this.plt.is('android')? 'file://sound.mp3': 'file://beep.caf'
+    };
+
+    this.localNotifications.on('missed').subscribe(async notification => {
+      this.localNotifications.clearAll();
       this.prescriptions.forEach(element => {
-        if(element.reminderTime == this.nextRxminder && element.status =='active'){
-          preList += element.preName + ", ";  //add dosages
-          notificationList += element;
-        }  
+        if(element.reminderTime == this.nextRxminder && element.status =='active' && (new Date().getTime() - this.lastNotificationClick.getTime()) > 1000 ){
+
+          this.storage.get(element.preName)
+            .then((res)=>{
+              res.countMissed = res.countMissed+1;
+
+              this.storage.remove(element.preName)
+                .then(()=>{
+                  this.storage.set(res.preName,res)
+                });
+          });
+        }
       });
+    });
 
-      preList = preList.slice(0,preList.length-2); //erase last comma
+    this.localNotifications.on('taken').subscribe(async notification => {
+      this.localNotifications.clearAll();
+      this.prescriptions.forEach(element => {
+        if(element.reminderTime == this.nextRxminder && element.status =='active' && (new Date().getTime() - this.lastNotificationClick.getTime()) > 1000 ){
 
-      let prescriptionText = 'Time to take: ' + preList;
-      let notification = {
-        id: 1,
-        title: 'It\'s '+twelveHRString+'!',
-        trigger: /*{every: {hour:reminderHour, minute: parseInt(reminderMinute)}, count:1},*/{ at: new Date(new Date().getTime() + 3600) },
-        data: { myData: 'hidden Message', notList: notificationList },
-        actions: [
-          { id: 'taken', title: 'Confirm', launch: true },
-          { id: 'missed',  title: 'Skip', launch: true }
-        ],
-        text: prescriptionText
-        //sound: this.plt.is('android')? 'file://sound.mp3': 'file://beep.caf'
-      };
+          this.storage.get(element.preName)
+            .then((res)=>{
+              res.countCompleted = res.countCompleted +1;
 
-      this.localNotifications.on('click').subscribe(async ()=>{
-        const toast = await this.toastController.create({
-          message: "CLICK",
-          duration: 3000
-        });
-        toast.present();
+              this.storage.remove(element.preName)
+                .then(()=>{
+                  this.storage.set(res.preName,res)
+                });
+          });
+        }
       });
+    });
 
-      this.localNotifications.on('missed').subscribe(async notification => {
-        this.localNotifications.clearAll();
-        this.prescriptions.forEach(element => {
-          if(element.reminderTime == this.nextRxminder && element.status =='active' && (new Date().getTime() - this.lastNotificationClick.getTime()) > 1000 ){
-
-            this.storage.get(element.preName)
-              .then((res)=>{
-                res.countMissed = res.countMissed+1;
-
-                this.storage.remove(element.preName)
-                  .then(()=>{
-                    this.storage.set(res.preName,res)
-                  });
-            });
-          }
-        });
-      });
-
-      this.localNotifications.on('taken').subscribe(async notification => {
-        this.localNotifications.clearAll();
-        this.prescriptions.forEach(element => {
-          if(element.reminderTime == this.nextRxminder && element.status =='active' && (new Date().getTime() - this.lastNotificationClick.getTime()) > 1000 ){
-
-            this.storage.get(element.preName)
-              .then((res)=>{
-                res.countCompleted = res.countCompleted +1;
-
-                this.storage.remove(element.preName)
-                  .then(()=>{
-                    this.storage.set(res.preName,res)
-                  });
-            });
-          }
-        });
-      });
-
-      this.localNotifications.cancelAll().then(()=>{
-        this.localNotifications.schedule(notification);
-        console.log("RXMINDER TIME: "+twelveHRString);
-        console.log("RXMINDER TEXT: "+prescriptionText);
-      });
-    }
+    this.localNotifications.cancelAll().then(()=>{
+      this.localNotifications.schedule(notification);
+      console.log("RXMINDER TIME: "+twelveHRString);
+      console.log("RXMINDER TEXT: "+prescriptionText);
+    });
   }
 
   public async addMissed(preName: string)
