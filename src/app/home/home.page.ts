@@ -393,7 +393,7 @@ export class HomePage {
       var next: string = "36:01"; // not a possible time
       var earliest: string = "36:01";
       var currentTime = new Date().getHours().toString() +":"+ ((new Date().getMinutes().toString().length<2) ? "0" + new Date().getMinutes().toString() : new Date().getMinutes().toString());
-      if(currentTime.charAt(0) != '0' ){
+      if(currentTime.charAt(0) != '0' && currentTime.length == 4){
         currentTime = '0'+currentTime;
       }
       

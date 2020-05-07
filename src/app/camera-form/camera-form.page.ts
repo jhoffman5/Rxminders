@@ -8,6 +8,7 @@ import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { NavController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-camera-form',
@@ -19,8 +20,13 @@ export class CameraFormPage implements OnInit {
   public numOfRxminders;
   public numMap;
 
-  constructor(public navCtrl: NavController, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController, public toastController:ToastController) {
+  constructor(public navCtrl: NavController, private storage: Storage, private route: ActivatedRoute, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController, public toastController:ToastController) { 
     this.formData = {preName:"", reminderTime: [], quantity: null, dosage:"", notes:"", countCompleted: 0, countMissed: 0};
+    this.formData.preName = this.route.snapshot.paramMap.get('preName').toString();
+    this.formData.notes = this.route.snapshot.paramMap.get('notes').toString();
+
+    //alert(this.formData.preName);
+
     this.numOfRxminders = 1;
     this.numMap = [];
     for(let i = 0; i < this.numOfRxminders; i++){

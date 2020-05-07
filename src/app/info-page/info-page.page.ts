@@ -26,8 +26,6 @@ export class InfoPagePage implements OnInit {
     this.progress = 0.0;
     console.log(this.param);
     this.updateInfo();
-
-    //.then((data)=>{this.prescription=this.getPrescription(this.param)});
   }
 
   ngOnInit() {

@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: 'edit', loadChildren: './edit/edit.module#EditPageModule' },
   { path: 'edit/:preName', loadChildren: './edit/edit.module#EditPageModule' },
   { path: 'camera-form', loadChildren: './camera-form/camera-form.module#CameraFormPageModule' },
-  { path: 'camera-form/:preName/:reminderTimes', loadChildren: './camera-form/camera-form.module#CameraFormPageModule' }
+  { path: 'camera-form/:preName/:notes', loadChildren: './camera-form/camera-form.module#CameraFormPageModule' }
 ];
 
 @NgModule({
