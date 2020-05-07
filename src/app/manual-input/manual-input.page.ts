@@ -34,6 +34,14 @@ export class ManualInputPage implements OnInit {
     return new Promise((resolve)=>{
       this.storage.length()
         .then(num => {
+          var r = [];
+          this.formData.reminderTime.forEach(time=>{
+            if(time !=""){
+              r.push(time);
+            }
+          })
+          this.formData.reminderTime = r;
+
           if(this.formData.preName==""){
             this.formData.preName = "Prescription "+num;
           }
