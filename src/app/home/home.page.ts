@@ -163,19 +163,26 @@ export class HomePage {
     var preList = '';
     var notificationList = [];
     this.prescriptions.forEach(element => {
-      if(element.reminderTime == this.nextRxminder && element.status =='active'){
-        preList += element.preName + ", ";  //add dosages
-        notificationList += element;
-      }  
+      element.reminderTime.forEach(time => {
+        if(element.status=='active'){
+          if(time == this.nextRxminder){
+            //preList += element.preName + ", ";  //add dosages
+            preList += element.preName + " - " + element.dosage + "\n";
+            notificationList += element;
+          }
+        }
+      });
     });
 
-    preList = preList.slice(0,preList.length-2); //erase last comma
+    preList.trimRight();
+    //preList = preList.slice(0,preList.length-2); //erase last comma
+
 
     let prescriptionText = 'Time to take: ' + preList;
     let notification = {
       id: 1,
       title: 'It\'s '+twelveHRString+'!',
-      trigger: {every: {hour:reminderHour, minute: parseInt(reminderMinute)}, count:1},/*{ at: new Date(new Date().getTime() + 3600) },*/
+      trigger: {every: {hour:reminderHour, minute: parseInt(reminderMinute)}, count:1},//{ at: new Date(new Date().getTime() + 3600) },
       data: { myData: 'hidden Message', notList: notificationList },
       actions: [
         { id: 'taken', title: 'Confirm', launch: true },
