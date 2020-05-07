@@ -19,21 +19,19 @@
 
 <!-- v normal home page with prescriptions entered v -->
 <ion-content><!---</ion-content> *ngIf="countActive!=0 || countArchived !=0">--->
-
-
-  <ion-card *ngIf="countActive!=0">
+  <ion-card *ngIf="nextRxminder<'24:01'">
     <ion-card-header style="background-color: #222428;">
       <ion-row>
         <ion-col>
           <ion-card-title style="padding-top:10px; padding-left:10px; font-size: medium;" color="light">Upcoming Rxminder</ion-card-title>
         </ion-col>
         <ion-col>
-          <ion-chip style="float: right;" color="light"><span *ngIf="countActive==0">{{ nextRxminder }}</span><ion-datetime *ngIf="areRxmindersMade" style="pointer-events: none;" displayFormat="h:mm A" [(ngModel)]="nextRxminder" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime></ion-chip>
+          <ion-chip style="float: right;" color="light"><span *ngIf="nextRxminder>'24:00'">No Rxminders Set</span><ion-datetime *ngIf="nextRxminder<'24:01'||nextRxminder=='24:01'" style="pointer-events: none;" displayFormat="h:mm A" [(ngModel)]="nextRxminder" value= "{{ nextRxminder }}" class="ion-no-margin ion-no-padding"></ion-datetime></ion-chip>
         </ion-col>
       </ion-row>
     </ion-card-header>
-    <ion-card-content style="padding-top: 10px;" *ngIf="nextRxminder!='No Rxminder Set'">
-      <span *ngFor="let prescription of prescriptions;"><span *ngIf="prescription.next == nextRxminder && prescription.status == 'active'">
+    <ion-card-content style="padding-top: 10px;" *ngIf="nextRxminder<'24:01'">
+      <span *ngFor="let prescription of pagePres;"><span *ngIf="prescription.next == nextRxminder && prescription.status == 'active'">
         <ion-chip color="success" style="font-size: medium; max-width: 100%;" (click)="infoPage(prescription)">
         <ion-label color="dark">
           {{ prescription.preName }}
@@ -49,21 +47,20 @@
     </ion-list-header>
     <ion-row>
       <ion-col>
-        <ion-card *ngIf="countActive == 0"color="primary">
+        <ion-card *ngIf="nextRxminder>'24:01'" color="primary">
           <ion-card-header color="primary">
             <ion-row>
               <ion-col>
                 <ion-chip color="primary" style="font-size: large; padding:20px; max-width: 100%;">
                   <ion-label color="dark" style="max-width: 100%;">
-                    No Current Prescriptions
+                    No Active Prescriptions
                   </ion-label>
                 </ion-chip>
               </ion-col>
             </ion-row>
           </ion-card-header>
         </ion-card>
-
-        <span *ngFor="let prescription of prescriptions;" style="padding:0; margin:0;">
+        <span *ngFor="let prescription of pagePres;" style="padding:0; margin:0;">
           <ion-card *ngIf="prescription.status=='active'">
             <ion-card-header color="dark" *ngIf="prescription.status=='active'">
               <ion-row>
@@ -107,7 +104,7 @@
     </ion-list-header>
     <ion-row>
       <ion-col>
-        <ion-card *ngIf="countArchived == 0"color="danger">
+        <!--ion-card *ngIf="countArchived == 0" color="danger">
           <ion-card-header color="danger">
             <ion-row>
               <ion-col>
@@ -119,9 +116,9 @@
               </ion-col>
             </ion-row>
           </ion-card-header>
-        </ion-card>
+        </ion-card>-->
 
-        <span *ngFor="let prescription of prescriptions;">
+        <span *ngFor="let prescription of pagePres">
           <ion-card *ngIf="prescription.status == 'archived';">
             <ion-card-header color="dark">
               <ion-row>

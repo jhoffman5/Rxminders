@@ -22,6 +22,8 @@ export class HomePage {
   public nextRxminder: string;
   public countActive: number;
   public countArchived: number;
+  public pagePres: any[];
+
   public deleteToggle = {
     val: 'Toggle Delete', isCheck:false
   }
@@ -40,11 +42,15 @@ export class HomePage {
     this.archiveToggle = {
       val: 'Toggle Archive', isCheck:false
     };
-
     this.lastNotificationClick = new Date(0);
+    this.time = new Date().toString();
+    this.countActive = 0;
+    this.countArchived = 0;
 
     this.getAllPrescriptions().then( (pres) => {
       this.prescriptions = pres;
+      this.pagePres = pres;
+
       this.getRxminder().then( (rxminder) =>{
         this.nextRxminder = rxminder;
         this.scheduleNotification();
@@ -59,9 +65,12 @@ export class HomePage {
     this.archiveToggle = {
       val: 'Toggle Archive', isCheck:false
     };
+    this.countActive = 0;
+    this.countArchived = 0;
 
     this.getAllPrescriptions().then( (pres) => {
       this.prescriptions = pres;
+      this.pagePres = pres;
       this.getRxminder().then( (rxminder) =>{
         this.nextRxminder = rxminder;
         this.scheduleNotification();
@@ -74,27 +83,29 @@ export class HomePage {
     return new Promise((resolve) => {
       let retVal = [];
       this.areRxmindersMade = false;
-      this.countActive = 0;
-      this.countArchived = 0;
+      var countActive = 0;
+      var countArchived = 0;
 
       this.storage.forEach((value:any, key:string, iterationNumber: Number)=>{
         this.getPrescriptionsNextRxminder(value.preName).then((pre:any)=>{
           retVal.push(pre);
           this.areRxmindersMade = true;
           if(pre.status=='active'){
-            this.countActive++;
+            countActive++;
           } else if(pre.status=='archived'){
-            this.countArchived++;
+            countArchived++;
           }
         });
       }).then(res=>{
           this.prescriptions = retVal;
+          this.countActive = countActive;
+          this.countArchived = countArchived;
           resolve(retVal);
         })
         .catch(e=>{
           console.log(e);
         });
-    })
+    });
   }
 
   public getRxminder(): Promise<string>{
@@ -113,7 +124,7 @@ export class HomePage {
       
       prescriptions.forEach(element => {
         element.reminderTime.forEach(rxminder => {
-          if(currentTime.charAt(0) != '0' ){
+          if(currentTime.charAt(0) != '0' && currentTime.length == 4){
             currentTime = '0'+currentTime;
           }
 
@@ -164,7 +175,7 @@ export class HomePage {
     let notification = {
       id: 1,
       title: 'It\'s '+twelveHRString+'!',
-      trigger: /*{every: {hour:reminderHour, minute: parseInt(reminderMinute)}, count:1},*/{ at: new Date(new Date().getTime() + 3600) },
+      trigger: {every: {hour:reminderHour, minute: parseInt(reminderMinute)}, count:1},/*{ at: new Date(new Date().getTime() + 3600) },*/
       data: { myData: 'hidden Message', notList: notificationList },
       actions: [
         { id: 'taken', title: 'Confirm', launch: true },
@@ -301,6 +312,17 @@ export class HomePage {
 
   public delete(prescription: string)
   {
+    this.pagePres.forEach((p)=>{
+      if(p.preName==prescription){
+        if(p.status=="active"){
+          this.countActive--;
+        } else {
+          this.countArchived--;
+        }
+        p.status = "NA";
+      }
+    });
+
     this.storage.remove(prescription)
       .then(()=>{
         this.getAllPrescriptions().then( (pres) => {
@@ -315,6 +337,14 @@ export class HomePage {
 
   public archive(prescription: string)
   {
+    this.countActive--;
+    this.countArchived++;
+    this.pagePres.forEach((p)=>{
+      if(p.preName==prescription){
+        p.status = "archived";
+      }
+    });
+
     this.storage.get(prescription)
       .then(obj =>{
         obj["status"] = "archived";
@@ -333,6 +363,14 @@ export class HomePage {
 
   public activate(prescription: string)
   {
+    this.countActive++;
+    this.countArchived--;
+    this.pagePres.forEach((p)=>{
+      if(p.preName==prescription){
+        p.status = "active";
+      }
+    });
+
     this.storage.get(prescription)
       .then(obj =>{
         obj["status"] = "active";
