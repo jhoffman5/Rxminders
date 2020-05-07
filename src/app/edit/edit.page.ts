@@ -17,51 +17,34 @@ import { ToastController } from '@ionic/angular';
 })
 export class EditPage implements OnInit {
 
-  public numMap;
-  public numOfRxminders;
   public prescription;
   public param; 
-  public formData = {preName:"", reminderTime:[], quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
+  public formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
 
   constructor(public navCtrl: NavController, public toastController:ToastController, private route: ActivatedRoute, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController, private iab: InAppBrowser) {
     this.param = this.route.snapshot.paramMap.get('preName').toString();
-    this.formData = {preName:"", reminderTime:[], quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
-    this.prescription = this.formData;
+    this.formData = {preName:"", reminderTime:"", quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
 
-    this.getPrescription().then((pre)=>{
-      this.numOfRxminders = pre.reminderTime.length;
-      this.prescription = pre;
-      this.formData = pre;
-      this.numMap = [];
-      for(let i = 0; i < this.numOfRxminders; i++){
-        this.numMap.push(i);
-      }
-      //this.prescription = pre;
-    });
+    console.log(this.param);
+    this.update();
   }
 
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
-    this.getPrescription().then((pre)=>{
-      this.numOfRxminders = pre.reminderTime.length;
-      this.numMap = [];
-      for(let i = 0; i < this.numOfRxminders; i++){
-        this.numMap.push(i);
-      }
-      this.prescription = pre;
-    });
+  async update(){
+    this.prescription = this.getPrescription();
   }
 
-  async getPrescription():Promise<any>{
-    return new Promise<any>((resolve)=>{
-      this.storage.get(this.param).then(res=>{
-        console.log("EDIT getPrescription:");
-        console.log(res);
-        resolve(res);
-      });
+  ionViewWillEnter() {
+    this.update();
+  }
+
+  getPrescription(){
+    var retVal = this.storage.get(this.param).then(res=>{
+      this.prescription = res;
     });
+    return retVal;
   }
 
   editForm(){
@@ -70,9 +53,6 @@ export class EditPage implements OnInit {
         this.formData["countMissed"] = res.countMissed;
         this.formData["countCompleted"] = res.countCompleted;
         this.formData["status"] = res.status;
-
-        //this.formData.reminderTime = this.formData.reminderTime;
-
         this.storage.remove(this.param)
           .then(()=>{
             this.storage.set(this.formData.preName,this.formData)
@@ -81,24 +61,6 @@ export class EditPage implements OnInit {
               });
           });
       });
-  }
-
-  public upNumMap()
-  {
-    this.numOfRxminders++;
-    this.numMap = [];
-    for(let i = 0; i < this.numOfRxminders; i++){
-      this.numMap.push(i);
-    }
-  }
-
-  public downNumMap()
-  {
-    this.numOfRxminders--;
-    this.numMap = [];
-    for(let i = 0; i < this.numOfRxminders; i++){
-      this.numMap.push(i);
-    }
   }
 
   cancelForm(){

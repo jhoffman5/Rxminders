@@ -86,8 +86,10 @@ export class HomePage {
           } else if(pre.status=='archived'){
             this.countArchived++;
           }
+          console.log(pre.next+"ASDFADSAFs");
         });
-      }).then(res=>{
+      })
+        .then(res=>{
           this.prescriptions = retVal;
           resolve(retVal);
         })
@@ -136,7 +138,6 @@ export class HomePage {
           resolve(next);
         });
       } else {
-        console.log("NEXT: No Rxminder Set");
         resolve("No Rxminder Set");
       }
     })
