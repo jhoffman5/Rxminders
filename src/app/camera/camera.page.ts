@@ -23,13 +23,18 @@ export class CameraPage implements OnInit {
   public words: any;
   public notes: string;
   public drugs: Set <string>;
+  public prescription: string;
   public prescriptionsInImg: string[] = [];
 
   constructor(public navCtrl: NavController, private camera: Camera, private ocr: OCR, public file: File, public http: HTTP, public toastController: ToastController){ 
-
- }
+    this.notes = null;
+    this.words = null;
+    this.prescription = null;
+    this.takePicture();
+  }
 
   ionViewDidEnter(){
+    //this.takePicture();
   }
 
   ngOnInit() {
@@ -57,12 +62,14 @@ export class CameraPage implements OnInit {
         this.words = this.cleanText(recognizedText.words.wordtext);
         this.checkInFDAServer()
           .then(res => {
-            this.words = res;
+            this.prescription = res;
             this.notes = this.getNotes(recognizedText.blocks.blocktext);
+            this.navCtrl.navigateForward('camera-form');
           })
           .catch(rej => {
             console.log(rej);
-            alert('No prescription names found')
+            this.notes = this.getNotes(recognizedText.blocks.blocktext);
+            alert('No prescription names found');
           })
       }, (err) =>{
         alert('Error recognizing text: ' + err);
@@ -71,18 +78,6 @@ export class CameraPage implements OnInit {
       alert("Camera issue:" + err)
       console.log("Camera issue:" + err);
     });
-/*
-    this.words = ["notap","asjkdfkla","ajlsdlnfkjabsdf","glycerin"];
-
-    this.checkInFDAServer()
-      .then(async res=>{
-        console.log(`promise result: ${res}`);
-        //send res and qty to form
-        this.words = res;
-      })
-      .catch(rej=>{
-        console.log(rej);
-      }); */
   }
 
   cleanText(words: string[]){
@@ -105,12 +100,11 @@ export class CameraPage implements OnInit {
   checkInFDAServer(): Promise<string> {
     return new Promise((resolve)=>{
       var word = "placeholder";
-      console.log("...");
 
       this.words.forEach(element => {
         this.http.get('http://rxnav.nlm.nih.gov/REST/rxclass/class/byDrugName.json/?drugName='+element,{},{})
           .then(data => {
-            if(JSON.stringify(JSON.parse(data.data).rxclassDrugInfoList) != undefined && element!="as"){
+            if(JSON.stringify(JSON.parse(data.data).rxclassDrugInfoList) != undefined && element.length>2){
               word = element;
               resolve(element);
             }
@@ -129,8 +123,9 @@ export class CameraPage implements OnInit {
     blockText = this.cleanText(blockText);
     blockText.forEach(element => {
       for(let i = 0; i < element.length-3; i++){
-        if((element[i]=='t'||element[i]=='T')&&(element[i+1]=='a'||element[i+1]=='A')&&(element[i+2]=='k'||element[i+2]=='k')&&(element[i+3]=='e'||element[i+3]=='e')){
+        if((element[i]=='t'||element[i]=='T')&&(element[i+1]=='a'||element[i+1]=='A')&&(element[i+2]=='k'||element[i+2]=='k')&&(element[i+3]=='e'||element[i+3]=='e')||((element[i]=='d'||element[i]=='D')&&(element[i+1]=='a'||element[i+1]=='A')&&(element[i+2]=='i'||element[i+2]=='I')&&(element[i+3]=='l'||element[i+3]=='L')&&(element[i+4]=='y'||element[i+4]=='Y'))){
           notes+=element;
+          break;
         }
       }
     });

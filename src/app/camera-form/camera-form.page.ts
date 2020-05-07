@@ -1,24 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { Storage } from '@ionic/storage';
+import { Platform } from '@ionic/angular';
+import { AlertController } from  '@ionic/angular';
 
 import { ToastController } from '@ionic/angular';
 
-import { Router } from '@angular/router';
-
+import { Storage } from '@ionic/storage';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { NavController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-manual-input',
-  templateUrl: './manual-input.page.html',
-  styleUrls: ['./manual-input.page.scss']
+  selector: 'app-camera-form',
+  templateUrl: './camera-form.page.html',
+  styleUrls: ['./camera-form.page.scss'],
 })
-export class ManualInputPage implements OnInit {
+export class CameraFormPage implements OnInit {
   formData = {preName:"", reminderTime: [], quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
   public numOfRxminders;
   public numMap;
 
-  constructor(public navCtrl: NavController, private storage: Storage, private router:Router, public toastController:ToastController){
+  constructor(public navCtrl: NavController, private storage: Storage, private localNotifications: LocalNotifications, private plt: Platform, private alertCtrl: AlertController, public toastController:ToastController) {
     this.formData = {preName:"", reminderTime: [], quantity: null, dosage:"", notes:"", countCompleted: 0, countMissed: 0};
     this.numOfRxminders = 1;
     this.numMap = [];
@@ -77,12 +78,12 @@ export class ManualInputPage implements OnInit {
         }).catch((e)=>{
           console.log(e);
           this.alertMessage('Failed Entering Prescription');
-          this.navCtrl.navigateForward('manual');
+          this.navCtrl.navigateForward('camera-form');
         });
       }).catch((e)=>{
         console.log(e);
         this.alertMessage('Failed Entering Prescription');
-        this.navCtrl.navigateForward('manual');
+        this.navCtrl.navigateForward('camera-form');
       })
   }
 
@@ -116,5 +117,4 @@ export class ManualInputPage implements OnInit {
   home(){
     this.navCtrl.navigateForward("home");
   }
-
 }

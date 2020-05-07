@@ -5,7 +5,7 @@
     </ion-buttons>
 
     <ion-title>
-      Take A Picture
+      Image
     </ion-title>
 
     <ion-buttons slot="end">
@@ -21,19 +21,18 @@
 
   <img [src]="currentImage" *ngIf="currentImage" class="centerImg">
 
-  <ion-card *ngIf="words">
+  <ion-card *ngIf="prescription">
     <ion-card-header>
-        <ion-card-title>prescriptions: {{ words }}</ion-card-title>
+        <ion-card-title>Prescription: {{ prescription }}</ion-card-title>
     </ion-card-header>
   </ion-card>
   
   <ion-card *ngIf="notes">
     <ion-card-header>
-        <ion-card-title>notes: {{ notes }}</ion-card-title>
+        <ion-card-title>Notes: {{ notes }}</ion-card-title>
     </ion-card-header>
   </ion-card>
 </ion-content>
-
 
 <ion-footer style="background-color: #222428;">
   <ion-grid>

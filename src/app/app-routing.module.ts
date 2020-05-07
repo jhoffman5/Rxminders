@@ -27,7 +27,9 @@ const routes: Routes = [
   { path: 'info-page', loadChildren: './info-page/info-page.module#InfoPagePageModule' },
   { path: 'info-page/:preName', loadChildren: './info-page/info-page.module#InfoPagePageModule'},
   { path: 'edit', loadChildren: './edit/edit.module#EditPageModule' },
-  { path: 'edit/:preName', loadChildren: './edit/edit.module#EditPageModule' }
+  { path: 'edit/:preName', loadChildren: './edit/edit.module#EditPageModule' },
+  { path: 'camera-form', loadChildren: './camera-form/camera-form.module#CameraFormPageModule' },
+  { path: 'camera-form/:preName/:reminderTimes', loadChildren: './camera-form/camera-form.module#CameraFormPageModule' }
 ];
 
 @NgModule({
