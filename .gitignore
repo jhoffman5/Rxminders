@@ -37,4 +37,3 @@ npm-debug.log*
 src/assets/FDA_drugs.json
 *.prefs
 .settings/org.eclipse.buildship.core.prefs
-.json
