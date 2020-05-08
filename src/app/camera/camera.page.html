@@ -19,19 +19,38 @@
 
 <ion-content>
 
-  <img [src]="currentImage" *ngIf="currentImage" class="centerImg">
-
-  <ion-card *ngIf="prescription">
+  <ion-card>
     <ion-card-header>
-        <ion-card-title>Prescription: {{ prescription }}</ion-card-title>
+      <ion-title>
+        Image
+      </ion-title>
+    </ion-card-header>
+    <img [src]="currentImage" *ngIf="currentImage" class="centerImg">
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header *ngIf="prescription">
+      <ion-card-title>Prescription: {{ prescription }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-header  *ngIf="!prescription">
+      <ion-card-title>No Prescription</ion-card-title>
     </ion-card-header>
   </ion-card>
   
-  <ion-card *ngIf="notes">
-    <ion-card-header>
+  <ion-card>
+    <ion-card-header *ngIf="notes">
         <ion-card-title>Notes: {{ notes }}</ion-card-title>
     </ion-card-header>
+    <ion-card-header *ngIf="!notes">
+      <ion-card-title>No Notes</ion-card-title>
+    </ion-card-header>
   </ion-card>
+
+  <span style="margin-right: auto; margin-left: auto;">
+    <button *ngIf="notes||prescription" (click)="confirm()" class="submitButton">
+      Confirm
+    </button>
+  </span>
 </ion-content>
 
 <ion-footer style="background-color: #222428;">

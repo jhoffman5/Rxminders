@@ -19,68 +19,68 @@ import { ToastController } from '@ionic/angular';
 })
 export class CameraPage implements OnInit {
 
-  currentImage: any;
+  public currentImage: any;
   public words: any;
   public notes: string;
   public times: any;
   public drugs: Set <string>;
   public prescription: string;
-  public prescriptionsInImg: string[] = [];
+  public prescriptionsInImg: string[];
 
   constructor(public navCtrl: NavController, private camera: Camera, private ocr: OCR, public file: File, public http: HTTP, public toastController: ToastController){ 
+    this.prescriptionsInImg = [];
     this.notes = null;
     this.words = null;
     this.prescription = null;
-    this.times = "no";
     this.takePicture();
-  }
-
-  ionViewDidEnter(){
-    //this.takePicture();
   }
 
   ngOnInit() {
   }
 
-  takePicture() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      saveToPhotoAlbum:false,
-      correctOrientation:true
-    };
+  async takePicture():Promise<void> {
+    return new Promise<void>(async (resolve)=>{
 
-    this.camera.getPicture(options).then((imageData) => {
-      this.currentImage = 'data:image/jpeg;base64,' + imageData;
+      const options: CameraOptions = {
+        quality: 100,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        saveToPhotoAlbum:false,
+        correctOrientation:true
+      };
 
-    this.ocr.recText(4, /*3,*/ imageData)
-      .then((recognizedText) => {
-        console.log(recognizedText);
-        this.words = this.cleanText(recognizedText.words.wordtext);
+      await this.camera.getPicture(options).then(async (imageData) => {
+        this.currentImage = 'data:image/jpeg;base64,' + imageData;
 
-        this.checkInFDAServer()
-          .then(res => {
-            this.prescription = res;
-            this.notes = this.getNotes(recognizedText.blocks.blocktext);
-            this.prescription = this.prescription[0].toUpperCase() + this.prescription.substr(1);
-            alert(this.times);
-            //alert(this.prescription);
-            this.navCtrl.navigateForward('camera-form/'+this.prescription+"/"+this.notes);
-          })
-          .catch(rej => {
-            console.log(rej);
-            this.notes = this.getNotes(recognizedText.blocks.blocktext);
-            alert('No prescription names found');
-            this.navCtrl.navigateForward('camera-form/%20/'+this.notes);
-          })
-      }, (err) =>{
-        alert('Error recognizing text: ' + err);
-      })
-    }, (err) => {
-      alert("Camera issue:" + err)
-      console.log("Camera issue:" + err);
+        await this.ocr.recText(4, /*3,*/ imageData)
+          .then((recognizedText) => {
+            console.log(recognizedText);
+            this.words = this.cleanText(recognizedText.words.wordtext);
+
+            this.checkInFDAServer()
+              .then(res => {
+                this.prescription = res;
+                this.notes = this.getNotes(recognizedText.blocks.blocktext);
+                this.prescription = this.prescription[0].toUpperCase() + this.prescription.substr(1);
+                resolve();
+              })
+              .catch(rej => {
+                console.log(rej);
+                this.notes = this.getNotes(recognizedText.blocks.blocktext);
+                alert('No prescription names found');
+                resolve();
+              });
+        }, (err) =>{
+          alert('Error recognizing text: ' + err);
+          resolve();
+        })
+      }, (err) => {
+        alert("Camera issue:" + err)
+        console.log("Camera issue:" + err);
+        resolve();
+      });
+      resolve();
     });
   }
 
@@ -125,30 +125,30 @@ export class CameraPage implements OnInit {
     blockText.forEach(element => {
       for(let i = 0; i < element.length-3; i++){
         if(((element[i]=='t'||element[i]=='T')&&(element[i+1]=='a'||element[i+1]=='A')&&(element[i+2]=='k'||element[i+2]=='K')&&(element[i+3]=='e'||element[i+3]=='E'))||((element[i]=='d'||element[i]=='D')&&(element[i+1]=='a'||element[i+1]=='A')&&(element[i+2]=='i'||element[i+2]=='I')&&(element[i+3]=='l'||element[i+3]=='L')&&(element[i+4]=='y'||element[i+4]=='Y'))){
-          notes+=element;
+          notes+= " " + element;
           break;
         }
       }
     });
+    
+    for(let i = 0; i < notes.length; i++){
+      if(notes[i]=='\n'){
+        notes = notes.substring(0,i)+' '+notes.substring(i+1);
+      }
+    }
 
-    let prevEl:any = null;
-    blockText.forEach(element => {
-      for(let i = 0; i < element.length-3; i++){
-        if(((element[i]=='t'||element[i]=='T')&&(element[i+1]=='i'||element[i+1]=='I')&&(element[i+2]=='m'||element[i+2]=='M')&&(element[i+3]=='e'||element[i+3]=='E')&&(element[i+2]=='s'||element[i+2]=='S'))){
-          rxNums = prevEl;
-          break;
-        }
-        prevEl = element;
-      }
-    });
+    notes = notes[0].toUpperCase() + notes.substring(1);
 
     this.notes = notes;
-    this.times = rxNums;
     return notes;
   }
 
   home(){
     this.navCtrl.navigateForward("home");
+  }
+
+  confirm(){
+    this.navCtrl.navigateForward('camera-form/'+this.prescription+"/"+this.notes);
   }
 
 }

@@ -14,12 +14,12 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./manual-input.page.scss']
 })
 export class ManualInputPage implements OnInit {
-  formData = {preName:"", reminderTime: [], quantity: null, dosage:"", notes:"", countCompleted:0, countMissed:0};
+  formData = {preName:"", reminderTime: [], dosage:"", notes:"", countCompleted:0, countMissed:0};
   public numOfRxminders;
   public numMap;
 
   constructor(public navCtrl: NavController, private storage: Storage, private router:Router, public toastController:ToastController){
-    this.formData = {preName:"", reminderTime: [], quantity: null, dosage:"", notes:"", countCompleted: 0, countMissed: 0};
+    this.formData = {preName:"", reminderTime: [], dosage:"", notes:"", countCompleted: 0, countMissed: 0};
     this.numOfRxminders = 1;
     this.numMap = [];
     for(let i = 0; i < this.numOfRxminders; i++){
