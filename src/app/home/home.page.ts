@@ -163,10 +163,12 @@ export class HomePage {
     var preList = '';
     var notificationList = [];
     this.prescriptions.forEach(element => {
-      if(element.reminderTime == this.nextRxminder && element.status =='active'){
-        preList += element.preName + ", ";  //add dosages
-        notificationList += element;
-      }  
+      element.reminderTime.forEach(time => {
+        if(time == this.nextRxminder && element.status =='active'){
+          preList += element.preName + ", ";  //add dosages
+          notificationList += element;
+        }
+      });
     });
 
     preList = preList.slice(0,preList.length-2); //erase last comma
@@ -188,36 +190,36 @@ export class HomePage {
     this.localNotifications.on('missed').subscribe(async notification => {
       this.localNotifications.clearAll();
       this.prescriptions.forEach(element => {
-        if(element.reminderTime == this.nextRxminder && element.status =='active' && (new Date().getTime() - this.lastNotificationClick.getTime()) > 1000 ){
-
-          this.storage.get(element.preName)
-            .then((res)=>{
-              res.countMissed = res.countMissed+1;
-
-              this.storage.remove(element.preName)
-                .then(()=>{
-                  this.storage.set(res.preName,res)
-                });
-          });
-        }
+        element.forEach(time => {
+          if(time == this.nextRxminder && element.status =='active' && (new Date().getTime() - this.lastNotificationClick.getTime()) > 1000 ){
+            this.storage.get(element.preName)
+              .then((res)=>{
+                res.countMissed = res.countMissed+1;
+                this.storage.remove(element.preName)
+                  .then(()=>{
+                    this.storage.set(res.preName,res)
+                  });
+            });
+          }
+        });
       });
     });
 
     this.localNotifications.on('taken').subscribe(async notification => {
       this.localNotifications.clearAll();
       this.prescriptions.forEach(element => {
-        if(element.reminderTime == this.nextRxminder && element.status =='active' && (new Date().getTime() - this.lastNotificationClick.getTime()) > 1000 ){
-
-          this.storage.get(element.preName)
-            .then((res)=>{
-              res.countCompleted = res.countCompleted +1;
-
-              this.storage.remove(element.preName)
-                .then(()=>{
-                  this.storage.set(res.preName,res)
+        element.reminderTime.forEach(time => {
+          if(time == this.nextRxminder && element.status =='active' && (new Date().getTime() - this.lastNotificationClick.getTime()) > 1000 ){
+            this.storage.get(element.preName)
+              .then((res)=>{
+                res.countCompleted = res.countCompleted +1;
+                this.storage.remove(element.preName)
+                  .then(()=>{
+                    this.storage.set(res.preName,res)
                 });
-          });
-        }
+            });
+          }
+        });
       });
     });
 
@@ -229,6 +231,14 @@ export class HomePage {
   }
 
   public async addMissed(preName: string)
+  {
+    this.storage.get(preName).then(prescription=>{
+      prescription.countMissed = prescription.countMissed+1;
+      this.storage.set(preName,prescription);
+    })
+  }
+
+  public async addConfirmed(preName: string)
   {
     this.storage.get(preName).then(prescription=>{
       prescription.countMissed = prescription.countMissed+1;

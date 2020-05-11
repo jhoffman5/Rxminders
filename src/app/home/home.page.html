@@ -71,21 +71,21 @@
                     </ion-label>
                   </ion-chip>
                 </ion-col>
-                <ion-col *ngIf="!deleteToggle.isChecked && !archiveToggle.isChecked" (click)="infoPage(prescription)">
+                <ion-col *ngIf="!deleteToggle.isCheck && !archiveToggle.isCheck" (click)="infoPage(prescription)">
                   <ion-chip color="light" style="float: right;">
                     <ion-label style="max-width: 100%;">
                       <ion-datetime style="pointer-events: none;" displayFormat="h:mm A" [(ngModel)]="prescription.next" value="prescription.next" class="ion-no-margin ion-no-padding"></ion-datetime>
                     </ion-label>
                   </ion-chip>
                 </ion-col>
-                <ion-col *ngIf="deleteToggle.isChecked">
+                <ion-col *ngIf="deleteToggle.isCheck">
                   <ion-chip color="danger" style="float: right;" (click)="deletePopUp(prescription.preName)">
                     <ion-label style="max-width: 100%;">
                       Delete
                     </ion-label>
                   </ion-chip>
                 </ion-col>
-                <ion-col *ngIf="archiveToggle.isChecked">
+                <ion-col *ngIf="archiveToggle.isCheck">
                   <ion-chip color="danger" style="float: right;" (click)="archivePopUp(prescription.preName)">
                     <ion-label style="max-width: 100%;">
                       Archive
@@ -129,21 +129,21 @@
                     </ion-label>
                   </ion-chip>
                 </ion-col>
-                <ion-col *ngIf="!deleteToggle.isChecked && !archiveToggle.isChecked" (click)="infoPage(prescription)">
+                <ion-col *ngIf="!deleteToggle.isCheck && !archiveToggle.isCheck" (click)="infoPage(prescription)">
                   <ion-chip color="light" style="float: right;">
                     <ion-label style="max-width: 100%;">
                       <ion-datetime style="pointer-events: none;" displayFormat="h:mm A" [(ngModel)]="prescription.next" value="prescription.next" class="ion-no-margin ion-no-padding"></ion-datetime>
                     </ion-label>
                   </ion-chip>
                 </ion-col>
-                <ion-col *ngIf="deleteToggle.isChecked">
+                <ion-col *ngIf="deleteToggle.isCheck">
                   <ion-chip color="danger" style="float: right;" (click)="deletePopUp(prescription.preName)">
                     <ion-label style="max-width: 100%;">
                       Delete
                     </ion-label>
                   </ion-chip>
                 </ion-col>
-                <ion-col *ngIf="archiveToggle.isChecked">
+                <ion-col *ngIf="archiveToggle.isCheck">
                   <ion-chip color="success" style="float: right;" (click)="renewPopUp(prescription.preName)">
                     <ion-label style="max-width: 100%;">
                       Renew
@@ -168,16 +168,16 @@
       <ion-fab-button color="dark" (click)="chooseInputPage()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="deleteToggle.isChecked" color="danger" (click)="archiveToggle.isChecked ? (deleteToggle.isChecked = false) : (deleteToggle.isChecked = !deleteToggle.isChecked)">
+      <ion-fab-button *ngIf="deleteToggle.isCheck" color="danger" (click)="archiveToggle.isCheck ? (deleteToggle.isCheck = false) : (deleteToggle.isCheck = !deleteToggle.isCheck)">
         <ion-icon name="trash" color="dark"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="!deleteToggle.isChecked" color="dark" (click)="archiveToggle.isChecked ? (deleteToggle.isChecked = false) : (deleteToggle.isChecked = !deleteToggle.isChecked)">
+      <ion-fab-button *ngIf="!deleteToggle.isCheck" color="dark" (click)="archiveToggle.isCheck ? (deleteToggle.isCheck = false) : (deleteToggle.isCheck = !deleteToggle.isCheck)">
         <ion-icon name="trash" color="danger"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="archiveToggle.isChecked" color="primary" (click)="deleteToggle.isChecked ? (archiveToggle.isChecked = false) : (archiveToggle.isChecked = !archiveToggle.isChecked)">
+      <ion-fab-button *ngIf="archiveToggle.isCheck" color="primary" (click)="deleteToggle.isCheck ? (archiveToggle.isCheck = false) : (archiveToggle.isCheck = !archiveToggle.isCheck)">
         <ion-icon name="archive" color="dark"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="!archiveToggle.isChecked" color="dark" (click)="deleteToggle.isChecked ? (archiveToggle.isChecked = false) : (archiveToggle.isChecked = !archiveToggle.isChecked)">
+      <ion-fab-button *ngIf="!archiveToggle.isCheck" color="dark" (click)="deleteToggle.isCheck ? (archiveToggle.isCheck = false) : (archiveToggle.isCheck = !archiveToggle.isCheck)">
         <ion-icon name="archive" color="primary"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
